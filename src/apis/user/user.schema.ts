@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import { ROLE, USER_STATUS } from 'src/core/constants/enum';
 import { DSchema } from 'src/core/decorators/schema.decorator';
 import { BaseSchema } from '../../base/base.schema';
+import { Address } from '../../base/schemas/address.schema';
 
 export type UserDocument = User & Document;
 
@@ -25,6 +26,9 @@ export class User extends BaseSchema {
 
   @Prop({ type: String, enum: USER_STATUS, required: true })
   status: USER_STATUS;
+
+  @Prop({ type: Address })
+  address: Address;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,6 +1,13 @@
 export const LIMIT = 10;
 export const PAGE = 1;
 
+export enum HTTP_METHOD {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
+
 export enum ROLE {
   ADMIN = 'admin',
   USER = 'user',

@@ -1,41 +1,40 @@
-
-import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthService } from 'src/apis/auth/auth.service';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { IResponse } from 'src/core/interfaces/IResponse';
+import {
+  responseError,
+  responseSuccessWithData,
+} from '../../base/base.controller';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: 'Get all auth' })
-  @Get()
-  async getAll() {
-    return this.authService.getAll();
+  @ApiOperation({ summary: 'Login' })
+  @Post('login')
+  async login(@Body() loginDto: LoginDto): Promise<IResponse<any>> {
+    try {
+      const data = await this.authService.login(loginDto);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error);
+      return responseError(error.message);
+    }
   }
 
-  @ApiOperation({ summary: 'Get a auth by id' })
-  @Get(':id')
-  async getById() {
-    return this.authService.getById();
-  }
-
-  @ApiOperation({ summary: 'Create a auth' })
-  @Post()
-  async create() {
-    return this.authService.create();
-  }
-
-  @ApiOperation({ summary: 'Update a auth' })
-  @Put(':id')
-  async updateById() {
-    return this.authService.updateById();
-  }
-
-  @ApiOperation({ summary: 'Delete a auth' })
-  @Delete(':id')
-  async deleteById() {
-    return await this.authService.deleteById();
+  @ApiOperation({ summary: 'Login' })
+  @Post('register')
+  async register(@Body() registerDto: RegisterDto): Promise<IResponse<any>> {
+    try {
+      const data = await this.authService.register(registerDto);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error);
+      return responseError(error.message);
+    }
   }
 }
-  
