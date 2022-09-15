@@ -9,11 +9,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ORDER_STATUS } from 'src/core/constants/enum';
 import { Type } from 'class-transformer';
 import { AddressDto } from '../../../base/dto/address.dto';
+import { IsObjectId } from '../../../core/validations/is-object-id.validation';
 
 class OrderProductDto {
   @ApiProperty()
   @IsOptional()
-  @IsString()
+  @IsObjectId()
   productId: string;
 
   @ApiProperty()
@@ -30,7 +31,7 @@ export class OrderDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsString()
+  @IsObjectId()
   userId: string;
 
   @ApiProperty()

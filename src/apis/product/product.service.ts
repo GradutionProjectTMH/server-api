@@ -67,7 +67,7 @@ export class ProductService {
   async getById(id: string) {
     const product = await this.productModel.findOne({
       _id: id,
-      isDelete: false,
+      isDelete: { $ne: true },
     });
     if (!product) throw new Error('Product does not exist');
     return product;

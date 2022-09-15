@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 import { PRODUCT_STATUS } from 'src/core/constants/enum';
-import { EnumTransform } from 'src/core/decorators/enum.decorator';
+import { EnumTransform } from '../../../core/decorators/enum-transform.decorator';
 
 export class ProductDto {
   @ApiProperty({ required: false })
@@ -51,6 +51,6 @@ export class ProductDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsEnum(PRODUCT_STATUS)
-  // @EnumTransform(PRODUCT_STATUS)
+  @EnumTransform(PRODUCT_STATUS)
   status: PRODUCT_STATUS;
 }
