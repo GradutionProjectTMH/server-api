@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ApisModule } from './apis/apis.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
@@ -11,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { JwtStrategy } from './core/strategies/jwt.strategy';
 import { HttpExceptionFilter } from './core/http/http-exception';
+import { ApisModule } from './apis/apis.module';
 
 @Module({
   imports: [

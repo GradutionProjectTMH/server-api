@@ -10,7 +10,8 @@ import { RegisterDto } from './dto/register.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>,
     private jwtService: JwtService,
   ) {}
 

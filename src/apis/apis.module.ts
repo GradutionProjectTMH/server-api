@@ -10,16 +10,23 @@ import { OrderModule } from 'src/apis/order/order.module';
 import { ProductModule } from 'src/apis/product/product.module';
 import { UserModule } from 'src/apis/user/user.module';
 import { LoggerMiddleware } from '../core/middleware/logger.middleware';
+import { ProjectModule } from 'src/apis/project/project.module';
 @Module({
-  imports: [AuthModule, CommentModule, OrderModule, ProductModule, UserModule],
+  imports: [
+    AuthModule,
+    CommentModule,
+    OrderModule,
+    ProductModule,
+    UserModule,
+    ProjectModule,
+  ],
   controllers: [],
   providers: [],
 })
 export class ApisModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes({
-      path: '*',
-      method: RequestMethod.ALL,
-    });
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
