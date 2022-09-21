@@ -1,3 +1,5 @@
+import { unlinkSync } from 'fs';
+
 const pagination = (total: number, limit: number): number => {
   return Math.ceil(total / limit);
 };
@@ -11,4 +13,15 @@ const removeKeyUndefined = (data: any) => {
 
   return data;
 };
-export { pagination, removeKeyUndefined };
+
+const removeFile = (filename: string) => {
+  try {
+    const fileSplit = filename.split('/');
+    unlinkSync(`./public/${fileSplit[fileSplit.length - 1]}`);
+    console.log(`successfully deleted /public/${filename}`);
+  } catch (err: any) {
+    console.log(err.message);
+  }
+};
+
+export { pagination, removeKeyUndefined, removeFile };

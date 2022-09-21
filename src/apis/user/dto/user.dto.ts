@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { AddressDto } from '../../../base/dto/address.dto';
 import { ROLE, USER_STATUS } from '../../../core/constants/enum';
 import { EnumTransform } from '../../../core/decorators/enum-transform.decorator';
@@ -39,6 +39,7 @@ export class UserDto {
   status: USER_STATUS;
 
   @ApiProperty()
+  @ValidateNested()
   @Type(() => AddressDto)
   @IsOptional()
   address: AddressDto;

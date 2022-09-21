@@ -1,11 +1,7 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
+import { registerDecorator } from 'class-validator';
 import * as mongodb from 'mongodb';
 
-export function IsObjectId(validationOptions?: ValidationOptions) {
+export function IsObjectId() {
   return function (object: unknown, propertyName: string) {
     registerDecorator({
       name: 'isObjectId',
@@ -15,7 +11,7 @@ export function IsObjectId(validationOptions?: ValidationOptions) {
         message: '$property must be a  ObjectId',
       },
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           return !mongodb.ObjectId.isValid(value);
         },
       },

@@ -1,15 +1,30 @@
 import {
   Controller,
   Get,
-  Post,
   Put,
-  Delete,
   Param,
   Body,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiPayloadTooLargeResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserService } from 'src/apis/user/user.service';
-import { responseSuccessWithData } from '../../base/base.controller';
+import {
+  responseError,
+  responseSuccessWithData,
+} from '../../base/base.controller';
+import { removeFile } from '../../base/base.service';
+import { ROLE } from '../../core/constants/enum';
+import { Auth } from '../../core/decorators/auth.decorator';
+import { User } from '../../core/decorators/user.decorator';
+import { multerOption } from '../../core/multer/multer.option';
 import { UserDto } from './dto/user.dto';
 
 @ApiTags('user')
@@ -18,6 +33,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: 'Get all user' })
+  // @Auth(ROLE.ADMIN)
   @Get()
   async getAll() {
     try {
@@ -25,19 +41,53 @@ export class UserController {
       return responseSuccessWithData(data);
     } catch (error) {
       console.log(error.message);
-      return reportError(error.message);
+      return responseError(error.message);
     }
   }
 
   @ApiOperation({ summary: 'Get a user by id' })
-  @Get(':id')
-  async getById(@Param('id') id: string) {
+  @Auth()
+  @Get('profile')
+  async getById(@User('id') userId: string) {
     try {
-      const data = await this.userService.getById(id);
+      const data = await this.userService.getById(userId);
       return responseSuccessWithData(data);
     } catch (error) {
       console.log(error.message);
-      return reportError(error.message);
+      return responseError(error.message);
+    }
+  }
+
+  @ApiOperation({ summary: 'Update a user' })
+  @Auth()
+  @UseInterceptors(FileInterceptor('avatar', multerOption))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        avatar: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiPayloadTooLargeResponse({
+    description: 'The upload files size is greater than 10 MB',
+  })
+  @Put('avatar')
+  async uploadAvatar(
+    @User('id') userId: string,
+    @UploadedFile() avatar: Express.Multer.File,
+  ) {
+    try {
+      const data = await this.userService.uploadAvatar(userId, avatar);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error.message);
+      removeFile(avatar.filename);
+      return responseError(error.message);
     }
   }
 
@@ -49,19 +99,7 @@ export class UserController {
       return responseSuccessWithData(data);
     } catch (error) {
       console.log(error.message);
-      return reportError(error.message);
-    }
-  }
-
-  @ApiOperation({ summary: 'Delete a user' })
-  @Delete(':id')
-  async deleteById(@Param('id') id: string) {
-    try {
-      const data = await this.userService.deleteById(id);
-      return responseSuccessWithData(data);
-    } catch (error) {
-      console.log(error.message);
-      return reportError(error.message);
+      return responseError(error.message);
     }
   }
 }

@@ -21,6 +21,9 @@ export class User extends BaseSchema {
   @Prop({ required: true })
   password: string;
 
+  @Prop({ required: false })
+  avatar: string;
+
   @Prop({ type: String, enum: ROLE, required: true })
   role: ROLE;
 

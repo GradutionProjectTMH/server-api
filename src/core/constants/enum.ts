@@ -17,7 +17,7 @@ export enum ROLE {
 
 export enum USER_STATUS {
   ACTIVE = 'active',
-  BLOCK = 'BLOCK',
+  BLOCK = 'block',
 }
 
 export enum PRODUCT_STATUS {

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/apis/user/user.schema';
+import { removeFile } from '../../base/base.service';
 import { UserDto } from './dto/user.dto';
 
 @Injectable()
@@ -16,7 +17,10 @@ export class UserService {
   }
 
   async getById(id: string) {
-    return this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
+    if (!user) throw new Error('User not found');
+
+    return user;
   }
 
   async updateById(id: string, data: UserDto) {
@@ -30,10 +34,16 @@ export class UserService {
     return user;
   }
 
-  async deleteById(id: string) {
-    const user = await this.userModel.findByIdAndDelete(id);
+  async uploadAvatar(userId: string, avatar: Express.Multer.File) {
+    const user = await this.userModel
+      .findByIdAndUpdate(userId, {
+        avatar: `${process.env.APP_URL}${avatar.filename}`,
+      })
+      .lean();
 
     if (!user) throw new Error('User not found');
-    return user;
+
+    if (user.avatar) removeFile(user.avatar);
+    return { ...user, avatar: `${process.env.APP_URL}${avatar.filename}` };
   }
 }

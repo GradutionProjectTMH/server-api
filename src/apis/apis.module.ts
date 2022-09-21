@@ -14,11 +14,11 @@ import { ProjectModule } from 'src/apis/project/project.module';
 @Module({
   imports: [
     AuthModule,
-    CommentModule,
-    OrderModule,
-    ProductModule,
     UserModule,
     ProjectModule,
+    ProductModule,
+    OrderModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],

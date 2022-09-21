@@ -28,7 +28,7 @@ export class AuthService {
     const password = hashPassword.sha512(`${login.email}.${login.password}`);
     if (password !== user.password) throw new Error('Incorrect password');
 
-    const payload = { uid: user._id, role: user.role };
+    const payload = { id: user._id, role: user.role };
 
     // const token = jwt.sign(payload, appConfig.jwt.KEY_SECRET_JWT, { expiresIn: appConfig.jwt.EXPIRES_IN });
     const token = this.jwtService.sign(payload, {
