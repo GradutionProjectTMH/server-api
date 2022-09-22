@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { plainToInstance } from 'class-transformer';
 import { FilterQuery, Model } from 'mongoose';
-import { pagination } from '../../base/base.service';
-import { LIMIT, PAGE, PRODUCT_SORT } from '../../core/constants/enum';
+import { pagination, removeKeyUndefined } from '../../base/base.service';
+import {
+  LIMIT,
+  PAGE,
+  PRODUCT_SORT,
+  PRODUCT_STATUS,
+  ROLE,
+} from '../../core/constants/enum';
 import { ProductFilterDto } from './dto/product-filter.dto';
 import { ProductDto } from './dto/product.dto';
 import { Product, ProductDocument } from './product.schema';
@@ -74,32 +81,55 @@ export class ProductService {
   }
 
   async create(data: ProductDto, user: string) {
-    const newProduct = new this.productModel({ ...data, createdBy: user });
+    const productInstance = plainToInstance(Product, data);
+
+    productInstance.status = PRODUCT_STATUS.PENDDING;
+
+    const newProduct = new this.productModel({
+      ...productInstance,
+      createdBy: user,
+    });
     return newProduct.save();
   }
 
-  async updateById(id: string, data: ProductDto) {
-    const product = await this.productModel.findByIdAndUpdate(
-      id,
-      { ...data, updatedAt: new Date() },
-      { new: true },
-    );
-    if (!product) throw new Error('Can not update product');
-  }
-
-  async deleteById(id: string, user: string) {
+  async updateById(id: string, data: ProductDto, userId: string, role: ROLE) {
     const product = await this.productModel.findById(id).lean();
 
-    if (!product) throw new Error('Product id is not exits');
-    if ((product.createdBy as any) !== user)
-      throw new Error('Can not update product');
+    if (!product) throw new Error('Product id does not exist');
+
+    if (product.createdBy !== userId) {
+      throw new Error('You can not update product');
+    }
+
+    const productInstance = plainToInstance(Product, data);
+
+    if (role !== ROLE.ADMIN) {
+      delete productInstance.status;
+    }
+
+    removeKeyUndefined(productInstance);
+
+    return this.productModel.findByIdAndUpdate(
+      id,
+      { ...productInstance, updatedAt: new Date() },
+      { new: true },
+    );
+  }
+
+  async deleteById(id: string, userId: string) {
+    const product = await this.productModel.findById(id).lean();
+
+    if (!product) throw new Error('Product id does not exist');
+
+    if (product.createdBy !== userId)
+      throw new Error('You can not update product');
 
     return this.productModel.findByIdAndUpdate(id, {
       isDelete: true,
 
       deletedAt: new Date(),
 
-      deleteBy: user,
+      deleteBy: userId,
     });
   }
 }

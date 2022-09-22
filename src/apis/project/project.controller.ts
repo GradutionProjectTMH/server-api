@@ -54,8 +54,8 @@ export class ProjectController {
   @Post()
   async create(@Body() body: ProjectDto, @User('id') userId: string) {
     try {
-      // const data = await this.projectService.create(body, userId);
-      return responseSuccessWithData(null);
+      const data = await this.projectService.create(body, userId);
+      return responseSuccessWithData(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

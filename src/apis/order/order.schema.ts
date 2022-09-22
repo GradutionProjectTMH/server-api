@@ -7,7 +7,10 @@ import { Product } from '../product/product.schema';
 import { User } from '../user/user.schema';
 
 @Schema()
-class OrderProduct extends Product {
+class OrderProduct {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Product.name })
+  productId: string;
+
   @Prop()
   amount: number;
 }
@@ -20,10 +23,7 @@ export class Order {
   products: OrderProduct[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
-  userId: User;
-
-  @Prop()
-  amount: number;
+  userId: string;
 
   @Prop({ type: String, enum: ORDER_STATUS, default: ORDER_STATUS.PENDDING })
   status: ORDER_STATUS;

@@ -31,11 +31,6 @@ export class OrderDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsObjectId()
-  userId: string;
-
-  @ApiProperty()
-  @IsOptional()
   @IsEnum(ORDER_STATUS)
   status: ORDER_STATUS;
 

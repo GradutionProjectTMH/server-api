@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document, ObjectId } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { PRODUCT_STATUS } from 'src/core/constants/enum';
 import { DSchema } from 'src/core/decorators/schema.decorator';
 import { BaseSchema } from '../../base/base.schema';
@@ -42,7 +42,7 @@ export class Product extends BaseSchema {
   status: PRODUCT_STATUS;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'users' })
-  createdBy: ObjectId;
+  createdBy: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

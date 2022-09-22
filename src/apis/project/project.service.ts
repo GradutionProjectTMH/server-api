@@ -43,7 +43,7 @@ export class ProjectService {
     const instanceProject = plainToInstance(Project, data);
 
     const project = await this.projectModel.findById(id).lean();
-    if (!project) throw new Error('Project not found');
+    if (!project) throw new Error('Product id does not exist');
 
     if (userId !== project.userId) {
       throw new Error('You can not update project');
@@ -53,7 +53,7 @@ export class ProjectService {
       const isExistDesigner = await this.userModel
         .findOne({ id: instanceProject.userId })
         .lean();
-      if (!isExistDesigner) throw new Error('Designer not found');
+      if (!isExistDesigner) throw new Error('Designer id does not exist');
     }
 
     return this.projectModel.updateOne(
@@ -68,7 +68,7 @@ export class ProjectService {
 
   async deleteById(id: string, userId: string) {
     const project = await this.projectModel.findById(id);
-    if (!project) throw new Error('Project not found');
+    if (!project) throw new Error('Product id does not exist');
 
     if (userId !== project.userId) {
       throw new Error('You can not delete project');
