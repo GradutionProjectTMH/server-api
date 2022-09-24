@@ -6,7 +6,7 @@ const storage = diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + file.originalname);
+    cb(null, uniqueSuffix + '.' + file.originalname.split('.').pop());
   },
 });
 
