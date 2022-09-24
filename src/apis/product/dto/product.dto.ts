@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
   IsNumber,
+  IsNumberString,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -17,27 +19,31 @@ export class ProductDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsArray()
-  images: string[];
+  @IsString({ each: true })
+  images: string[] = [];
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
+  // @Transform((value) => Number(value))
   star: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
+  // @Transform((value) => Number(value))
   oldPrice: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
+  // @Transform((value) => Number(value))
   price: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
+  // @Transform((value) => Number(value))
   sale: number;
 
   // @Prop({ type: String, required: true })

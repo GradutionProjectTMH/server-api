@@ -92,6 +92,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Update a user' })
+  @Auth()
   @Put(':id')
   async updateById(@Param('id') id: string, @Body() body: UserDto) {
     try {

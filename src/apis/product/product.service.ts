@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { FilterQuery, Model } from 'mongoose';
-import { pagination, removeKeyUndefined } from '../../base/base.service';
+import {
+  pagination,
+  removeFile,
+  removeKeyUndefined,
+} from '../../base/base.service';
 import {
   LIMIT,
   PAGE,
@@ -80,28 +84,51 @@ export class ProductService {
     return product;
   }
 
-  async create(data: ProductDto, user: string) {
+  async create(data: ProductDto, userId: string, files: Express.Multer.File[]) {
+    const images = files.map(
+      (file) => `${process.env.APP_URL}${file.filename}`,
+    );
+
     const productInstance = plainToInstance(Product, data);
 
     productInstance.status = PRODUCT_STATUS.PENDDING;
+    productInstance.images = images;
+    productInstance.createdBy = userId;
 
-    const newProduct = new this.productModel({
-      ...productInstance,
-      createdBy: user,
-    });
+    const newProduct = new this.productModel(productInstance);
     return newProduct.save();
   }
 
-  async updateById(id: string, data: ProductDto, userId: string, role: ROLE) {
+  async updateById(
+    id: string,
+    data: ProductDto,
+    userId: string,
+    role: ROLE,
+    files: Express.Multer.File[],
+  ) {
     const product = await this.productModel.findById(id).lean();
 
     if (!product) throw new Error('Product id does not exist');
 
-    if (product.createdBy !== userId) {
+    console.log(product.createdBy.toString());
+
+    if (product.createdBy.toString() !== userId) {
       throw new Error('You can not update product');
     }
 
     const productInstance = plainToInstance(Product, data);
+
+    const images = files.map(
+      (file) => `${process.env.APP_URL}${file.filename}`,
+    );
+
+    if (!Array.isArray(productInstance.images)) {
+      productInstance.images = (productInstance.images as string)
+        .split(',')
+        .map((v) => v.trim());
+    }
+
+    productInstance.images = [...productInstance.images, ...images];
 
     if (role !== ROLE.ADMIN) {
       delete productInstance.status;
@@ -109,11 +136,19 @@ export class ProductService {
 
     removeKeyUndefined(productInstance);
 
-    return this.productModel.findByIdAndUpdate(
+    const productUpdate = await this.productModel.findByIdAndUpdate(
       id,
       { ...productInstance, updatedAt: new Date() },
       { new: true },
     );
+
+    product.images.forEach((image) => {
+      if (!productUpdate.images.includes(image)) {
+        removeFile(image);
+      }
+    });
+
+    return productUpdate;
   }
 
   async deleteById(id: string, userId: string) {
