@@ -6,8 +6,16 @@ import {
   Delete,
   Body,
   Param,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiPayloadTooLargeResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ProjectService } from 'src/apis/project/project.service';
 import {
   responseError,
@@ -16,6 +24,7 @@ import {
 } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
+import { multerDiskOption } from '../../core/multer/multer.option';
 import { ProjectDto } from './dto/project.dto';
 
 @ApiTags('project')
@@ -50,6 +59,40 @@ export class ProjectController {
   }
 
   @ApiOperation({ summary: 'Create a project' })
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'boundaryImg', maxCount: 1 },
+        { name: 'crossSectionImg', maxCount: 1 },
+      ],
+      multerDiskOption,
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        star: { type: 'number' },
+        oldPrice: { type: 'number' },
+        price: { type: 'number' },
+        sale: { type: 'number' },
+        description: { type: 'string' },
+        boundaryImg: {
+          type: 'string',
+          format: 'binary',
+        },
+        crossSectionImg: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiPayloadTooLargeResponse({
+    description: 'The upload files size is greater than 10 MB',
+  })
   @Auth()
   @Post()
   async create(@Body() body: ProjectDto, @User('id') userId: string) {

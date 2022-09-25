@@ -20,11 +20,11 @@ import {
   responseError,
   responseSuccessWithData,
 } from '../../base/base.controller';
-import { removeFile } from '../../base/base.service';
+import { removeFile } from '../../base/services/base.service';
 import { ROLE } from '../../core/constants/enum';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
-import { multerOption } from '../../core/multer/multer.option';
+import { multerMemoryOption } from '../../core/multer/multer.option';
 import { UserDto } from './dto/user.dto';
 
 @ApiTags('user')
@@ -60,7 +60,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Update a user' })
   @Auth()
-  @UseInterceptors(FileInterceptor('avatar', multerOption))
+  @UseInterceptors(FileInterceptor('avatar', multerMemoryOption))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {

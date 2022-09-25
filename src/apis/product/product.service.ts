@@ -6,7 +6,8 @@ import {
   pagination,
   removeFile,
   removeKeyUndefined,
-} from '../../base/base.service';
+} from '../../base/services/base.service';
+import { S3UploadService } from '../../base/services/s3upload.service';
 import {
   LIMIT,
   PAGE,
@@ -23,6 +24,7 @@ export class ProductService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
+    private readonly s3UploadService: S3UploadService,
   ) {}
 
   async getAll(filter: ProductFilterDto) {
@@ -85,9 +87,8 @@ export class ProductService {
   }
 
   async create(data: ProductDto, userId: string, files: Express.Multer.File[]) {
-    const images = files.map(
-      (file) => `${process.env.APP_URL}${file.filename}`,
-    );
+    const fileS3s = await this.s3UploadService.s3UploadMultiple(files);
+    const images = fileS3s.map((file) => file.Location);
 
     const productInstance = plainToInstance(Product, data);
 
@@ -110,17 +111,14 @@ export class ProductService {
 
     if (!product) throw new Error('Product id does not exist');
 
-    console.log(product.createdBy.toString());
-
     if (product.createdBy.toString() !== userId) {
       throw new Error('You can not update product');
     }
 
     const productInstance = plainToInstance(Product, data);
 
-    const images = files.map(
-      (file) => `${process.env.APP_URL}${file.filename}`,
-    );
+    const fileS3s = await this.s3UploadService.s3UploadMultiple(files);
+    const images = fileS3s.map((file) => file.Location);
 
     if (!Array.isArray(productInstance.images)) {
       productInstance.images = (productInstance.images as string)
@@ -142,11 +140,15 @@ export class ProductService {
       { new: true },
     );
 
+    const fileDeletes = [];
     product.images.forEach((image) => {
       if (!productUpdate.images.includes(image)) {
-        removeFile(image);
+        const fileLocations = image.split('/');
+        fileDeletes.push({ Key: fileLocations[fileLocations.length - 1] });
       }
     });
+
+    this.s3UploadService.deleteFiles(fileDeletes);
 
     return productUpdate;
   }
@@ -166,5 +168,23 @@ export class ProductService {
 
       deleteBy: userId,
     });
+  }
+
+  async deleteTrashById(id: string, userId: string) {
+    const product = await this.productModel.findById(id).lean();
+
+    if (!product) throw new Error('Product id does not exist');
+
+    if (product.createdBy !== userId)
+      throw new Error('You can not update product');
+
+    await this.productModel.deleteOne({ _id: id });
+
+    const fileDeletes = product.images.map((image) => {
+      const fileLocations = image.split('/');
+      return { Key: fileLocations[fileLocations.length - 1] };
+    });
+
+    this.s3UploadService.deleteFiles(fileDeletes);
   }
 }

@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/apis/user/user.schema';
-import { removeFile } from '../../base/base.service';
+import { removeFile } from '../../base/services/base.service';
+import { S3UploadService } from '../../base/services/s3upload.service';
 import { UserDto } from './dto/user.dto';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class UserService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
+    private readonly s3UploadService: S3UploadService,
   ) {}
 
   async getAll() {
@@ -35,15 +37,21 @@ export class UserService {
   }
 
   async uploadAvatar(userId: string, avatar: Express.Multer.File) {
-    const user = await this.userModel
-      .findByIdAndUpdate(userId, {
-        avatar: `${process.env.APP_URL}${avatar.filename}`,
-      })
-      .lean();
+    const user = await this.userModel.findById(userId).lean();
 
     if (!user) throw new Error('User not found');
 
-    if (user.avatar) removeFile(user.avatar);
-    return { ...user, avatar: `${process.env.APP_URL}${avatar.filename}` };
+    const file = await this.s3UploadService.s3Upload(avatar);
+
+    await this.userModel.updateOne({ _id: userId }, { avatar: file.Location });
+
+    if (user.avatar) {
+      const fileLocations = user.avatar.split('/');
+      this.s3UploadService.deleteFile({
+        Key: fileLocations[fileLocations.length - 1],
+      });
+    }
+
+    return { ...user, avatar: file.Location };
   }
 }

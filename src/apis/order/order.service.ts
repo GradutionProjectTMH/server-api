@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { FilterQuery, Model } from 'mongoose';
-import { pagination, removeKeyUndefined } from '../../base/base.service';
+import {
+  pagination,
+  removeKeyUndefined,
+} from '../../base/services/base.service';
 import { ORDER_STATUS, ROLE } from '../../core/constants/enum';
 import { ProductService } from '../product/product.service';
 import { OrderFilterDto } from './dto/order-filter.dto';

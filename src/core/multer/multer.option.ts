@@ -1,6 +1,6 @@
-import { FileFilterCallback, diskStorage } from 'multer';
+import { FileFilterCallback, diskStorage, memoryStorage } from 'multer';
 
-const storage = diskStorage({
+const storageDisk = diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public');
   },
@@ -9,6 +9,8 @@ const storage = diskStorage({
     cb(null, uniqueSuffix + '.' + file.originalname.split('.').pop());
   },
 });
+
+const storageMemory = memoryStorage();
 
 const fileFilter = (
   request,
@@ -26,7 +28,12 @@ const fileFilter = (
   }
 };
 
-export const multerOption = {
-  storage,
+export const multerDiskOption = {
+  storage: storageDisk,
+  fileFilter,
+};
+
+export const multerMemoryOption = {
+  storage: storageMemory,
   fileFilter,
 };

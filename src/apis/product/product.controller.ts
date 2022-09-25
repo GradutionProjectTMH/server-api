@@ -24,9 +24,9 @@ import {
   responseError,
   responseSuccessWithData,
 } from '../../base/base.controller';
-import { removeFile } from '../../base/base.service';
+import { removeFile } from '../../base/services/base.service';
 import { ROLE } from '../../core/constants/enum';
-import { multerOption } from '../../core/multer/multer.option';
+import { multerMemoryOption } from '../../core/multer/multer.option';
 import { ProductFilterDto } from './dto/product-filter.dto';
 import { ProductDto } from './dto/product.dto';
 import { ProductService } from './product.service';
@@ -62,7 +62,7 @@ export class ProductController {
 
   @ApiOperation({ summary: 'Create product' })
   @Auth()
-  @UseInterceptors(FilesInterceptor('files', 20, multerOption))
+  @UseInterceptors(FilesInterceptor('files', 20, multerMemoryOption))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -105,7 +105,7 @@ export class ProductController {
 
   @ApiOperation({ summary: 'Update product by id' })
   @Auth()
-  @UseInterceptors(FilesInterceptor('files', 20, multerOption))
+  @UseInterceptors(FilesInterceptor('files', 20, multerMemoryOption))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
