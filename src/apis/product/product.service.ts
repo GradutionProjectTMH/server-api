@@ -4,7 +4,6 @@ import { plainToInstance } from 'class-transformer';
 import { FilterQuery, Model } from 'mongoose';
 import {
   pagination,
-  removeFile,
   removeKeyUndefined,
 } from '../../base/services/base.service';
 import { S3UploadService } from '../../base/services/s3upload.service';
