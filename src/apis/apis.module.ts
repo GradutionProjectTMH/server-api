@@ -12,6 +12,7 @@ import { UserModule } from 'src/apis/user/user.module';
 import { LoggerMiddleware } from '../core/middleware/logger.middleware';
 import { ProjectModule } from 'src/apis/project/project.module';
 import { DetailModule } from 'src/apis/detail-drawing/detail-drawing.module';
+import { UploadModule } from 'src/apis/upload/upload.module';
 @Module({
   imports: [
     AuthModule,
@@ -21,11 +22,12 @@ import { DetailModule } from 'src/apis/detail-drawing/detail-drawing.module';
     OrderModule,
     CommentModule,
     DetailModule,
+    UploadModule,
   ],
   controllers: [],
   providers: [],
 })
-export class ApisModuleimplementsNestModule {
+export class ApisModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
