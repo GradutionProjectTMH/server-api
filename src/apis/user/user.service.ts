@@ -24,9 +24,9 @@ export class UserService {
     return user;
   }
 
-  async updateById(id: string, data: UserDto) {
+  async updateProfile(data: UserDto, userId: string) {
     const user = await this.userModel.findByIdAndUpdate(
-      id,
+      userId,
       { ...data, updatedAt: new Date() },
       { new: true },
     );

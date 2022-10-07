@@ -13,6 +13,7 @@ import { LoggerMiddleware } from '../core/middleware/logger.middleware';
 import { ProjectModule } from 'src/apis/project/project.module';
 import { DetailModule } from 'src/apis/detail-drawing/detail-drawing.module';
 import { UploadModule } from 'src/apis/upload/upload.module';
+import { HireModule } from 'src/apis/hire/hire.module';
 @Module({
   imports: [
     AuthModule,
@@ -23,6 +24,7 @@ import { UploadModule } from 'src/apis/upload/upload.module';
     CommentModule,
     DetailModule,
     UploadModule,
+    HireModule,
   ],
   controllers: [],
   providers: [],

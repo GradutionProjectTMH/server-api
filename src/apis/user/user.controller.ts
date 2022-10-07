@@ -93,10 +93,10 @@ export class UserController {
 
   @ApiOperation({ summary: 'Update a user' })
   @Auth()
-  @Put(':id')
-  async updateById(@Param('id') id: string, @Body() body: UserDto) {
+  @Put('profile')
+  async updateById(@Body() body: UserDto, @User('id') userId: string) {
     try {
-      const data = await this.userService.updateById(id, body);
+      const data = await this.userService.updateProfile(body, userId);
       return responseSuccessWithData(data);
     } catch (error) {
       console.log(error.message);

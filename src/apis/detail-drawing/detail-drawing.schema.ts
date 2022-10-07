@@ -7,7 +7,7 @@ import { DETAIL_DRAWING_STATUS } from './enum/detail-drawing.enum';
 @Schema()
 class Design2D {
   @Prop({ type: Number })
-  house_boundary: number;
+  houseBoundary: number;
 
   @Prop({ type: Number })
   width: number;
