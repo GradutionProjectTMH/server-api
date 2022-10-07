@@ -5,24 +5,6 @@ import { User } from '../user/user.schema';
 import { DETAIL_DRAWING_STATUS } from './enum/detail-drawing.enum';
 
 @Schema()
-class Design2D {
-  @Prop({ type: Number })
-  houseBoundary: number;
-
-  @Prop({ type: Number })
-  width: number;
-
-  @Prop({ type: Number })
-  height: number;
-
-  @Prop({ type: String })
-  boundaryImg: string;
-
-  @Prop({ type: String })
-  crossSectionImg: string;
-}
-
-@Schema()
 class ExpectedMaterial {
   @Prop({ type: String })
   name: string;
@@ -47,8 +29,20 @@ export class DetailDrawing {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   userId: string;
 
-  @Prop({ type: Design2D })
-  design2D: Design2D;
+  @Prop({ type: Number })
+  houseBoundary: number;
+
+  @Prop({ type: Number })
+  width: number;
+
+  @Prop({ type: Number })
+  height: number;
+
+  @Prop({ type: String })
+  boundaryImg: string;
+
+  @Prop({ type: String })
+  crossSectionImg: string;
 
   @Prop({ type: Array<ExpectedMaterial> })
   expectedMaterial: ExpectedMaterial[];

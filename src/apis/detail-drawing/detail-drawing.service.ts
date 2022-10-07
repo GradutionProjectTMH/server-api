@@ -21,46 +21,49 @@ export class DetailDrawingService {
   }
 
   async getById(id: string, userId: string) {
-    return this.detailDrawingModel.findOne({ id, userId });
+    const drawing = await this.detailDrawingModel.findOne({ id, userId });
+    if (!drawing) throw new Error('Detail drawing does not exists');
+
+    return drawing;
   }
 
   async create(data: DetailDrawingDto, userId: string) {
-    const instanceProject = plainToInstance(DetailDrawing, data);
+    const detailDrawingInstance = plainToInstance(DetailDrawing, data);
 
-    instanceProject.userId = userId;
-    const newProject = new this.detailDrawingModel(instanceProject);
-    return newProject.save();
+    detailDrawingInstance.userId = userId;
+    const newDetailDrawing = new this.detailDrawingModel(detailDrawingInstance);
+    return newDetailDrawing.save();
   }
 
   async updateById(id: string, data: DetailDrawingDto, userId: string) {
-    const instanceProject = plainToInstance(DetailDrawing, data);
+    const detailDrawingInstance = plainToInstance(DetailDrawing, data);
 
-    const project = await this.detailDrawingModel.findById(id).lean();
-    if (!project) throw new Error('Product id does not exist');
+    const detailDrawing = await this.detailDrawingModel.findById(id).lean();
+    if (!detailDrawing) throw new Error('Product id does not exist');
 
-    if (userId !== project.userId) {
-      throw new Error('You can not update project');
+    if (userId !== detailDrawing.userId) {
+      throw new Error('You can not update detail drawing');
     }
 
     return this.detailDrawingModel.updateOne(
       { id },
       {
-        ...project,
-        ...removeKeyUndefined(instanceProject),
+        ...detailDrawing,
+        ...removeKeyUndefined(detailDrawingInstance),
         updatedAt: new Date(),
       },
     );
   }
 
   async deleteById(id: string, userId: string) {
-    const project = await this.detailDrawingModel.findById(id);
-    if (!project) throw new Error('Product id does not exist');
+    const detailDrawing = await this.detailDrawingModel.findById(id);
+    if (!detailDrawing) throw new Error('Detail drawing id does not exist');
 
-    if (userId !== project.userId) {
-      throw new Error('You can not delete project');
+    if (userId !== detailDrawing.userId) {
+      throw new Error('You can not delete detail drawing');
     }
     await this.detailDrawingModel.deleteOne({ id });
 
-    return project;
+    return detailDrawing;
   }
 }

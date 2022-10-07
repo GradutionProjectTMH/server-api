@@ -12,7 +12,9 @@ export function IsObjectId() {
       },
       validator: {
         validate(value: any) {
-          return !mongodb.ObjectId.isValid(value);
+          // console.log(mongodb.ObjectId.isValid(value));
+
+          return mongodb.ObjectId.isValid(value);
         },
       },
     });

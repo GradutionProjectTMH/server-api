@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
 import { Hire, HireDocument } from 'src/apis/hire/hire.schema';
 import { pagination } from '../../base/services/base.service';
+import { DetailDrawingService } from '../detail-drawing/detail-drawing.service';
 import { UserService } from '../user/user.service';
 import { HireFilterDto } from './dto/hire-filter.dto';
 import { HireDto } from './dto/hire.dto';
@@ -14,6 +15,7 @@ export class HireService {
     @InjectModel(Hire.name)
     private readonly hireModel: Model<HireDocument>,
     private readonly userService: UserService,
+    private readonly detailDrawingService: DetailDrawingService,
   ) {}
 
   async getAll(filter: HireFilterDto) {
@@ -47,6 +49,8 @@ export class HireService {
     const hireInstance = plainToInstance(Hire, data);
 
     await this.userService.getById(hireInstance.designerId);
+
+    await this.detailDrawingService.getById(hireInstance.detailDrawing, userId);
 
     hireInstance.userId = userId;
 

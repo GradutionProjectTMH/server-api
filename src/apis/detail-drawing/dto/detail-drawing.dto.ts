@@ -11,33 +11,6 @@ import {
 import { EnumTransform } from '../../../core/decorators/enum-transform.decorator';
 import { DETAIL_DRAWING_STATUS } from '../enum/detail-drawing.enum';
 
-export class Design2DDto {
-  @ApiProperty()
-  @IsOptional()
-  @IsNumber()
-  house_boundary: number;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsNumber()
-  width: number;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsNumber()
-  height: number;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  boundaryImg: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  crossSectionImg: string;
-}
-
 export class ExpectedMaterialDto {
   @ApiProperty()
   @IsOptional()
@@ -63,11 +36,30 @@ export class RoomDto {
 }
 
 export class DetailDrawingDto {
-  @ApiProperty({ type: Design2DDto })
-  @ValidateNested()
+  @ApiProperty()
   @IsOptional()
-  @Type(() => Design2DDto)
-  design2D: Design2DDto;
+  @IsNumber()
+  houseBoundary: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  width: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  height: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  boundaryImg: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  crossSectionImg: string;
 
   @ApiProperty({ type: [ExpectedMaterialDto] })
   @IsArray()
@@ -83,7 +75,7 @@ export class DetailDrawingDto {
   @Type(() => RoomDto)
   rooms: RoomDto[];
 
-  @ApiProperty()
+  @ApiProperty({ type: DETAIL_DRAWING_STATUS, enum: DETAIL_DRAWING_STATUS })
   @IsOptional()
   @IsEnum(DETAIL_DRAWING_STATUS)
   @EnumTransform(DETAIL_DRAWING_STATUS)

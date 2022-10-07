@@ -24,7 +24,6 @@ import {
 } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
-import { multerDiskOption } from '../../core/multer/multer.option';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
 
 @ApiTags('detail-drawings')
@@ -32,7 +31,7 @@ import { DetailDrawingDto } from './dto/detail-drawing.dto';
 export class DetailDrawingController {
   constructor(private readonly detailDrawingService: DetailDrawingService) {}
 
-  @ApiOperation({ summary: 'Get all project' })
+  @ApiOperation({ summary: 'Get all drawing' })
   @Auth()
   @Get()
   async getAll(@User('id') userId: string) {
@@ -45,7 +44,7 @@ export class DetailDrawingController {
     }
   }
 
-  @ApiOperation({ summary: 'Get a project by id' })
+  @ApiOperation({ summary: 'Get a drawing by id' })
   @Auth()
   @Get(':id')
   async getById(@Param('id') id: string, @User('id') userId: string) {
@@ -58,41 +57,7 @@ export class DetailDrawingController {
     }
   }
 
-  @ApiOperation({ summary: 'Create a project' })
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'boundaryImg', maxCount: 1 },
-        { name: 'crossSectionImg', maxCount: 1 },
-      ],
-      multerDiskOption,
-    ),
-  )
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        name: { type: 'string' },
-        star: { type: 'number' },
-        oldPrice: { type: 'number' },
-        price: { type: 'number' },
-        sale: { type: 'number' },
-        description: { type: 'string' },
-        boundaryImg: {
-          type: 'string',
-          format: 'binary',
-        },
-        crossSectionImg: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @ApiPayloadTooLargeResponse({
-    description: 'The upload files size is greater than 10 MB',
-  })
+  @ApiOperation({ summary: 'Create a drawing' })
   @Auth()
   @Post()
   async create(@Body() body: DetailDrawingDto, @User('id') userId: string) {
@@ -105,7 +70,7 @@ export class DetailDrawingController {
     }
   }
 
-  @ApiOperation({ summary: 'Update a project' })
+  @ApiOperation({ summary: 'Update a drawing' })
   @Auth()
   @Put(':id')
   async updateById(
@@ -115,20 +80,20 @@ export class DetailDrawingController {
   ) {
     try {
       await this.detailDrawingService.updateById(id, data, userId);
-      return responseSuccess('Update project success');
+      return responseSuccess('Update drawing success');
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
     }
   }
 
-  @ApiOperation({ summary: 'Delete a project' })
+  @ApiOperation({ summary: 'Delete a drawing' })
   @Auth()
   @Delete(':id')
   async deleteById(@Param('id') id: string, @User('id') userId: string) {
     try {
       await this.detailDrawingService.deleteById(id, userId);
-      return responseSuccess('Delete project success');
+      return responseSuccess('Delete drawing success');
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

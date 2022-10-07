@@ -49,7 +49,17 @@ export class HireDto {
   @ApiProperty()
   @IsOptional()
   @IsObjectId()
+  userId: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsObjectId()
   designerId: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsObjectId()
+  detailDrawing: string;
 
   @ApiProperty({ type: [ItemFloorDesign] })
   @IsOptional()
@@ -57,13 +67,13 @@ export class HireDto {
   @Type(() => ItemFloorDesign)
   floorDesigns: ItemFloorDesign[];
 
-  @ApiProperty()
+  @ApiProperty({ type: [ItemDesign] })
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ItemDesign)
   houseDesigns: ItemDesign[];
 
-  @ApiProperty({ type: [ItemDesign] })
+  @ApiProperty({ enum: STATUS_HIRE })
   @IsOptional()
   @IsEnum(STATUS_HIRE)
   @EnumTransform(STATUS_HIRE)
