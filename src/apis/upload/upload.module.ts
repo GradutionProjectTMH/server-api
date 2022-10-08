@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UploadController } from 'src/apis/upload/upload.controller';
 import { UploadService } from 'src/apis/upload/upload.service';
 import { Upload, UploadSchema } from 'src/apis/upload/upload.schema';
-import { S3UploadService } from '../../base/services/s3upload.service';
 import { UserService } from '../user/user.service';
 import { User, UserSchema } from '../user/user.schema';
 
@@ -15,6 +14,7 @@ import { User, UserSchema } from '../user/user.schema';
     ]),
   ],
   controllers: [UploadController],
-  providers: [UploadService, S3UploadService, UserService],
+  providers: [UploadService, UserService],
+  exports: [UploadService, UserService],
 })
 export class UploadModule {}

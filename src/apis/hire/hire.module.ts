@@ -5,13 +5,13 @@ import { HireService } from 'src/apis/hire/hire.service';
 import { Hire, HireSchema } from 'src/apis/hire/hire.schema';
 import { UserService } from '../user/user.service';
 import { User, UserSchema } from '../user/user.schema';
-import { S3UploadService } from '../../base/services/s3upload.service';
 import { Upload, UploadSchema } from '../upload/upload.schema';
 import { DetailDrawingService } from '../detail-drawing/detail-drawing.service';
 import {
   DetailDrawing,
   DetailDrawingSchema,
 } from '../detail-drawing/detail-drawing.schema';
+import { UploadService } from '../upload/upload.service';
 
 @Module({
   imports: [
@@ -23,6 +23,6 @@ import {
     ]),
   ],
   controllers: [HireController],
-  providers: [HireService, UserService, S3UploadService, DetailDrawingService],
+  providers: [HireService, UserService, UploadService, DetailDrawingService],
 })
 export class HireModule {}

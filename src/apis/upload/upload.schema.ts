@@ -1,5 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { BaseSchema } from '../../base/schemas/base.schem';
 import { DSchema } from '../../core/decorators/schema.decorator';
 import { User } from '../user/user.schema';
 import { FILE_STATUS } from './enums/file-status.enum';
@@ -7,7 +8,7 @@ import { FILE_STATUS } from './enums/file-status.enum';
 export type UploadDocument = Upload & Document;
 
 @DSchema()
-export class Upload {
+export class Upload extends BaseSchema {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   userId: string;
 

@@ -5,6 +5,7 @@ import {
   UploadedFiles,
   UseInterceptors,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
@@ -15,6 +16,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UploadService } from 'src/apis/upload/upload.service';
+import {
+  responseError,
+  responseSuccess,
+  responseSuccessWithData,
+} from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { multerMemoryOption } from '../../core/multer/multer.option';
@@ -28,10 +34,16 @@ export class UploadController {
   @ApiOperation({ summary: 'Get a upload all' })
   @Get('')
   async getAll(@Query() filter: FileFilterDto) {
-    return this.uploadService.getAll(filter);
+    try {
+      const data = await this.uploadService.getAll(filter);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error.message);
+      return responseError(error.message);
+    }
   }
 
-  @ApiOperation({ summary: 'Get all upload' })
+  @ApiOperation({ summary: 'Upload files' })
   @Auth()
   @UseInterceptors(FilesInterceptor('files', null, multerMemoryOption))
   @ApiConsumes('multipart/form-data')
@@ -57,6 +69,24 @@ export class UploadController {
     @UploadedFiles() files: Express.Multer.File[],
     @User('id') userId: string,
   ) {
-    return this.uploadService.uploadFiles(files, userId);
+    try {
+      const data = await this.uploadService.uploadFiles(files, userId);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error.message);
+      return responseError(error.message);
+    }
+  }
+
+  @ApiOperation({ summary: 'Delete all upload' })
+  @Delete()
+  async removeAll() {
+    try {
+      await this.uploadService.removeAll();
+      return responseSuccess('Delete all success!');
+    } catch (error) {
+      console.log(error.message);
+      return responseError(error.message);
+    }
   }
 }

@@ -6,7 +6,6 @@ import {
   pagination,
   removeKeyUndefined,
 } from '../../base/services/base.service';
-import { S3UploadService } from '../../base/services/s3upload.service';
 import {
   LIMIT,
   PAGE,
@@ -14,6 +13,9 @@ import {
   PRODUCT_STATUS,
   ROLE,
 } from '../../core/constants/enum';
+import { FileDto } from '../upload/dtos/file.dto';
+import { FILE_STATUS } from '../upload/enums/file-status.enum';
+import { UploadService } from '../upload/upload.service';
 import { ProductFilterDto } from './dto/product-filter.dto';
 import { ProductDto } from './dto/product.dto';
 import { Product, ProductDocument } from './product.schema';
@@ -23,7 +25,7 @@ export class ProductService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
-    private readonly s3UploadService: S3UploadService,
+    private readonly uploadService: UploadService,
   ) {}
 
   async getAll(filter: ProductFilterDto) {
@@ -85,47 +87,39 @@ export class ProductService {
     return product;
   }
 
-  async create(data: ProductDto, userId: string, files: Express.Multer.File[]) {
-    const fileS3s = await this.s3UploadService.s3UploadMultiple(files);
-    const images = fileS3s.map((file) => file.Location);
-
+  async create(data: ProductDto, userId: string) {
     const productInstance = plainToInstance(Product, data);
 
     productInstance.status = PRODUCT_STATUS.PENDDING;
-    productInstance.images = images;
     productInstance.createdBy = userId;
 
     const newProduct = new this.productModel(productInstance);
-    return newProduct.save();
+    const product = await newProduct.save();
+
+    this.uploadService
+      .updateFileStatus(
+        productInstance.images.map((e) => {
+          return {
+            location: e,
+            status: FILE_STATUS.USING,
+          };
+        }),
+      )
+      .catch((err) => console.log(err));
+
+    return product;
   }
 
-  async updateById(
-    id: string,
-    data: ProductDto,
-    userId: string,
-    role: ROLE,
-    files: Express.Multer.File[],
-  ) {
+  async updateById(id: string, data: ProductDto, userId: string, role: ROLE) {
     const product = await this.productModel.findById(id).lean();
 
     if (!product) throw new Error('Product id does not exist');
 
-    if (product.createdBy.toString() !== userId) {
+    if (product.createdBy !== userId) {
       throw new Error('You can not update product');
     }
 
     const productInstance = plainToInstance(Product, data);
-
-    const fileS3s = await this.s3UploadService.s3UploadMultiple(files);
-    const images = fileS3s.map((file) => file.Location);
-
-    if (!Array.isArray(productInstance.images)) {
-      productInstance.images = (productInstance.images as string)
-        .split(',')
-        .map((v) => v.trim());
-    }
-
-    productInstance.images = [...productInstance.images, ...images];
 
     if (role !== ROLE.ADMIN) {
       delete productInstance.status;
@@ -139,15 +133,19 @@ export class ProductService {
       { new: true },
     );
 
-    const fileDeletes = [];
+    const fileDeletes: FileDto[] = [];
     product.images.forEach((image) => {
       if (!productUpdate.images.includes(image)) {
-        const fileLocations = image.split('/');
-        fileDeletes.push({ Key: fileLocations[fileLocations.length - 1] });
+        fileDeletes.push({
+          location: image,
+          status: FILE_STATUS.NON_USED,
+        });
       }
     });
 
-    this.s3UploadService.deleteFiles(fileDeletes);
+    this.uploadService
+      .updateFileStatus(fileDeletes)
+      .catch((err) => console.log(err));
 
     return productUpdate;
   }
@@ -180,10 +178,15 @@ export class ProductService {
     await this.productModel.deleteOne({ _id: id });
 
     const fileDeletes = product.images.map((image) => {
-      const fileLocations = image.split('/');
-      return { Key: fileLocations[fileLocations.length - 1] };
+      return {
+        location: image,
+        status: FILE_STATUS.NON_USED,
+      };
     });
 
-    this.s3UploadService.deleteFiles(fileDeletes);
+    this.uploadService
+      .updateFileStatus(fileDeletes)
+      .catch((err) => console.log(err));
+    return;
   }
 }

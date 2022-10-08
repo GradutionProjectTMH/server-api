@@ -2,8 +2,8 @@ import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ROLE, USER_STATUS } from 'src/core/constants/enum';
 import { DSchema } from 'src/core/decorators/schema.decorator';
-import { BaseSchema } from '../../base/base.schema';
 import { Address } from '../../base/schemas/address.schema';
+import { BaseSchema } from '../../base/schemas/base.schem';
 
 export type UserDocument = User & Document;
 

@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/apis/user/user.schema';
-import { S3UploadService } from '../../base/services/s3upload.service';
+import { FILE_STATUS } from '../upload/enums/file-status.enum';
+import { UploadService } from '../upload/upload.service';
 import { UserDto } from './dto/user.dto';
 
 @Injectable()
@@ -10,7 +11,8 @@ export class UserService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
-    private readonly s3UploadService: S3UploadService,
+    @Inject(forwardRef(() => UploadService))
+    private readonly uploadService: UploadService,
   ) {}
 
   async getAll() {
@@ -40,17 +42,20 @@ export class UserService {
 
     if (!user) throw new Error('User not found');
 
-    const file = await this.s3UploadService.s3Upload(avatar);
+    const file = await this.uploadService.uploadFiles(
+      [avatar],
+      userId,
+      FILE_STATUS.USING,
+    );
 
-    await this.userModel.updateOne({ _id: userId }, { avatar: file.Location });
+    await this.userModel.updateOne({ _id: userId }, { avatar: file[0] });
 
     if (user.avatar) {
-      const fileLocations = user.avatar.split('/');
-      this.s3UploadService.deleteFile({
-        Key: fileLocations[fileLocations.length - 1],
-      });
+      this.uploadService.updateFileStatus([
+        { location: user.avatar, status: FILE_STATUS.NON_USED },
+      ]);
     }
 
-    return { ...user, avatar: file.Location };
+    return { ...user, avatar: file[0] };
   }
 }

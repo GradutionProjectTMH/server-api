@@ -2,7 +2,7 @@ import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { PRODUCT_STATUS } from 'src/core/constants/enum';
 import { DSchema } from 'src/core/decorators/schema.decorator';
-import { BaseSchema } from '../../base/base.schema';
+import { BaseSchema } from '../../base/schemas/base.schem';
 
 export type ProductDocument = Product & Document;
 

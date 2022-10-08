@@ -1,17 +1,22 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { Upload, UploadDocument } from 'src/apis/upload/upload.schema';
 import * as AWS from 'aws-sdk';
 import { readFileSync } from 'fs';
-import { S3UploadService } from '../../base/services/s3upload.service';
 import { FILE_STATUS } from './enums/file-status.enum';
 import { FileFilterDto } from './dtos/file-filter.dto';
 import { UserService } from '../user/user.service';
 import { pagination } from '../../base/services/base.service';
+import { FileDto } from './dtos/file.dto';
 
 interface File {
-  Key: string;
+  key: string;
 }
 
 @Injectable()
@@ -27,12 +32,16 @@ export class UploadService {
   constructor(
     @InjectModel(Upload.name)
     private readonly uploadModel: Model<UploadDocument>,
-    private readonly s3UploadService: S3UploadService,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
   ) {}
 
-  async uploadFiles(files: Express.Multer.File[], userId: string) {
-    const fileS3s = await this.s3UploadService.s3UploadMultiple(files);
+  async uploadFiles(
+    files: Express.Multer.File[],
+    userId: string,
+    status = FILE_STATUS.NON_USED,
+  ) {
+    const fileS3s = await this.s3UploadMultiple(files);
     const newUploads: Upload[] = fileS3s.map((file) => {
       return {
         userId,
@@ -40,11 +49,15 @@ export class UploadService {
         etag: file.ETag,
         key: file.Key,
         location: file.Location,
-        status: FILE_STATUS.NON_USED,
+        status,
       };
     });
 
-    return this.uploadModel.insertMany(newUploads);
+    const result = await this.uploadModel.insertMany(newUploads);
+
+    return result.map((e) => {
+      return e.location;
+    });
   }
 
   async getAll(filter: FileFilterDto) {
@@ -73,15 +86,39 @@ export class UploadService {
     };
   }
 
-  // async updateStatus(location: string[], status: FILE_STATUS, userId: string) {
-  //   const upload = await this.uploadModel.findOne({ location }).lean();
-  //   if (!upload) return;
-  //   if (upload.userId !== userId) {
-  //     throw new Error('You can not update ');
-  //   }
+  async updateFileStatus(files: FileDto[]) {
+    const func = files.map((f) => {
+      return this.uploadModel.updateOne(
+        { location: f.location },
+        { status: f.status },
+      );
+    });
+    await Promise.all(func).catch((err) => console.log(err));
+    return;
+  }
 
-  //   return this.uploadModel.up;
-  // }
+  async removeAll() {
+    const files = await this.uploadModel
+      .find({
+        status: FILE_STATUS.NON_USED,
+        createdAt: {
+          // $lte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+          $lte: new Date(new Date().getTime()),
+        },
+      })
+      .lean();
+
+    if (Array.isArray(files) && files.length === 0) return;
+    await this.deleteFiles(files);
+
+    return this.uploadModel.deleteMany({
+      status: FILE_STATUS.NON_USED,
+      createdAt: {
+        // $lte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+        $lte: new Date(new Date().getTime()),
+      },
+    });
+  }
 
   private async s3Upload(file: Express.Multer.File) {
     try {
@@ -131,10 +168,10 @@ export class UploadService {
     }
   }
 
-  deleteFile(file: File) {
+  private deleteFile(file: File) {
     const params: AWS.S3.DeleteObjectRequest = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: file.Key,
+      Key: file.key,
     };
 
     return new Promise((resolve, reject) => {
@@ -150,10 +187,10 @@ export class UploadService {
     });
   }
 
-  deleteFiles(files: Array<File>) {
+  private deleteFiles(files: Array<File>) {
     const Keys = files.map((file) => {
       return {
-        Key: file.Key,
+        Key: file.key,
       };
     });
 
