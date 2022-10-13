@@ -22,6 +22,39 @@ class Room {
   amount: number;
 }
 
+@Schema()
+class AdditionalInformation {
+  @Prop({ type: String })
+  members: string;
+
+  @Prop({ type: String })
+  titles: string;
+
+  @Prop({ type: Boolean })
+  wallpaper: boolean;
+
+  @Prop({ type: String })
+  budget: string;
+
+  @Prop({ type: String })
+  location: string;
+
+  @Prop({ type: Boolean })
+  locatedAtAlley: boolean;
+
+  @Prop({ type: Boolean })
+  businessInHouse: boolean;
+}
+
+@Schema()
+class BountyReward {
+  @Prop({ type: String })
+  coinId: string;
+
+  @Prop({ type: Number })
+  amount: number;
+}
+
 export type DetailDrawingDocument = DetailDrawing & Document;
 
 @DSchema()
@@ -49,6 +82,12 @@ export class DetailDrawing {
 
   @Prop({ type: Array<Room> })
   rooms: Room[];
+
+  @Prop({ type: Array<BountyReward> })
+  bountyRewards: BountyReward[];
+
+  @Prop({ type: AdditionalInformation })
+  additionalInformation: AdditionalInformation;
 
   @Prop({ type: String, enum: DETAIL_DRAWING_STATUS })
   status: DETAIL_DRAWING_STATUS;
