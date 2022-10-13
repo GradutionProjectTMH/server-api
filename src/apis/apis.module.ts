@@ -14,6 +14,7 @@ import { ProjectModule } from 'src/apis/project/project.module';
 import { DetailModule } from 'src/apis/detail-drawing/detail-drawing.module';
 import { UploadModule } from 'src/apis/upload/upload.module';
 import { HireModule } from 'src/apis/hire/hire.module';
+import { TransactionModule } from 'src/apis/transaction/transaction.module';
 @Module({
   imports: [
     AuthModule,
@@ -25,6 +26,7 @@ import { HireModule } from 'src/apis/hire/hire.module';
     DetailModule,
     UploadModule,
     HireModule,
+    TransactionModule,
   ],
   controllers: [],
   providers: [],
