@@ -15,6 +15,7 @@ import { DetailModule } from 'src/apis/detail-drawing/detail-drawing.module';
 import { UploadModule } from 'src/apis/upload/upload.module';
 import { HireModule } from 'src/apis/hire/hire.module';
 import { TransactionModule } from 'src/apis/transaction/transaction.module';
+import { CoinModule } from 'src/apis/coin/coin.module';
 @Module({
   imports: [
     AuthModule,
@@ -27,6 +28,7 @@ import { TransactionModule } from 'src/apis/transaction/transaction.module';
     UploadModule,
     HireModule,
     TransactionModule,
+    CoinModule,
   ],
   controllers: [],
   providers: [],
