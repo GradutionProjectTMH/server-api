@@ -5,9 +5,11 @@ import { CoinService } from 'src/apis/coin/coin.service';
 import { Coin, CoinSchema } from 'src/apis/coin/coin.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Coin.name, schema: CoinSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Coin.name, schema: CoinSchema }]),
+  ],
   controllers: [CoinController],
   providers: [CoinService],
+  exports: [CoinService],
 })
-
 export class CoinModule {}

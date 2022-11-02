@@ -8,6 +8,7 @@ import {
 } from 'src/apis/detail-drawing/detail-drawing.schema';
 import { removeKeyUndefined } from '../../base/services/base.service';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
+import { DetailDrawingFilterDto } from './dto/detail.drawing-filter.dto';
 
 @Injectable()
 export class DetailDrawingService {
@@ -15,6 +16,10 @@ export class DetailDrawingService {
     @InjectModel(DetailDrawing.name)
     private readonly detailDrawingModel: Model<DetailDrawingDocument>,
   ) {}
+
+  async getAll(filter: DetailDrawingFilterDto) {
+    return this.detailDrawingModel.find({});
+  }
 
   async getAllByUser(userId: string) {
     return this.detailDrawingModel.find({ userId });

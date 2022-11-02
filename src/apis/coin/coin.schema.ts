@@ -12,8 +12,8 @@ export class Coin {
   @Prop({ type: String })
   symbol: string;
 
-  @Prop({ type: String })
-  price: string;
+  @Prop({ type: Number })
+  price: number;
 
   @Prop({ type: String })
   icon: string;

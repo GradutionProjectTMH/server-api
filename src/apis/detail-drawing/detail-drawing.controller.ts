@@ -4,18 +4,11 @@ import {
   Post,
   Put,
   Delete,
-  UseInterceptors,
   Param,
   Body,
+  Query,
 } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiPayloadTooLargeResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DetailDrawingService } from 'src/apis/detail-drawing/detail-drawing.service';
 import {
   responseError,
@@ -25,6 +18,7 @@ import {
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
+import { DetailDrawingFilterDto } from './dto/detail.drawing-filter.dto';
 
 @ApiTags('detail-drawings')
 @Controller('detail-drawings')
@@ -34,7 +28,20 @@ export class DetailDrawingController {
   @ApiOperation({ summary: 'Get all drawing' })
   @Auth()
   @Get()
-  async getAll(@User('id') userId: string) {
+  async getAll(@Query() filter: DetailDrawingFilterDto) {
+    try {
+      const data = await this.detailDrawingService.getAll(filter);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error.message);
+      return responseError(error.message);
+    }
+  }
+
+  @ApiOperation({ summary: 'Get all drawing' })
+  @Auth()
+  @Get()
+  async getAllByUser(@User('id') userId: string) {
     try {
       const data = await this.detailDrawingService.getAllByUser(userId);
       return responseSuccessWithData(data);

@@ -14,7 +14,7 @@ export class CoinService {
   ) {}
 
   async getAll() {
-    return await this.coinModel.find();
+    return this.coinModel.find().lean();
   }
 
   async getById(id: string) {
@@ -29,6 +29,11 @@ export class CoinService {
     const coinInstance = plainToInstance(Coin, data);
     const coin = new this.coinModel(coinInstance);
     return coin.save();
+  }
+
+  async insertMany(data: Coin[]) {
+    await this.coinModel.remove();
+    return this.coinModel.insertMany(data);
   }
 
   async updateById(id: string, data: CoinDto) {
