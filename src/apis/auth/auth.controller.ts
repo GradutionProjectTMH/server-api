@@ -1,10 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { IResponse } from 'src/core/interfaces/IResponse';
 import {
   responseError,
   responseSuccessWithData,
 } from '../../base/base.controller';
+import { Auth } from '../../core/decorators/auth.decorator';
+import { User } from '../../core/decorators/user.decorator';
 import { AuthService } from './auth.service';
 import { LoginByEmailDto, LoginByGoogleDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -44,6 +46,19 @@ export class AuthController {
     try {
       const data = await this.authService.register(registerDto);
       return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error);
+      return responseError(error.message);
+    }
+  }
+
+  @ApiOperation({ summary: 'check token' })
+  @Auth()
+  @Get('check-token')
+  async checkToken(@User('id') userId: string): Promise<IResponse<any>> {
+    try {
+      const result = await this.authService.checkToken(userId);
+      return responseSuccessWithData(result);
     } catch (error) {
       console.log(error);
       return responseError(error.message);

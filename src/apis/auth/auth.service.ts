@@ -121,4 +121,10 @@ export class AuthService {
 
     return newUser.save();
   }
+
+  async checkToken(userId: string) {
+    const user = await this.userModel.findById(userId);
+    if (!user) throw new Error('User does not exist!');
+    return user;
+  }
 }
