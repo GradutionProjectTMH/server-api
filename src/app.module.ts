@@ -11,7 +11,7 @@ import { join } from 'path';
 import { JwtStrategy } from './core/strategies/jwt.strategy';
 import { HttpExceptionFilter } from './core/http/http-exception';
 import { ApisModule } from './apis/apis.module';
-import { HelperModule } from './helpers/schedulers/helper.module';
+import { HelperModule } from './helpers/helper.module';
 
 @Module({
   imports: [

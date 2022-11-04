@@ -6,7 +6,7 @@ import {
   responseSuccessWithData,
 } from '../../base/base.controller';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
+import { LoginByEmailDto, LoginByGoogleDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('auth')
@@ -15,11 +15,23 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Login' })
-  @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<IResponse<any>> {
+  @Post('login-by-email')
+  async loginByEmail(@Body() data: LoginByEmailDto): Promise<IResponse<any>> {
     try {
-      const data = await this.authService.login(loginDto);
-      return responseSuccessWithData(data);
+      const result = await this.authService.loginByEmail(data);
+      return responseSuccessWithData(result);
+    } catch (error) {
+      console.log(error);
+      return responseError(error.message);
+    }
+  }
+
+  @ApiOperation({ summary: 'Login' })
+  @Post('login-by-google')
+  async loginByGoogle(@Body() data: LoginByGoogleDto): Promise<IResponse<any>> {
+    try {
+      const result = await this.authService.loginByGoogle(data);
+      return responseSuccessWithData(result);
     } catch (error) {
       console.log(error);
       return responseError(error.message);

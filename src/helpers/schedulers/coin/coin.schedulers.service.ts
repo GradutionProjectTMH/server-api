@@ -15,7 +15,7 @@ export class CoinSchedulerService {
 
   private readonly logger = new Logger(CoinSchedulerService.name);
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_10_HOURS)
   async handleCron() {
     try {
       const coins = await this.coinService.getAll();

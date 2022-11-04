@@ -4,24 +4,31 @@ import { ROLE, USER_STATUS } from 'src/core/constants/enum';
 import { DSchema } from 'src/core/decorators/schema.decorator';
 import { Address } from '../../base/schemas/address.schema';
 import { BaseSchema } from '../../base/schemas/base.schem';
+import { SIGNUP_TYPE } from './enum/user.enum';
 
 export type UserDocument = User & Document;
 
 @DSchema()
 export class User extends BaseSchema {
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   firstName: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: false })
   lastName: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ type: String, required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true, enum: SIGNUP_TYPE })
+  signupType: string;
+
+  @Prop({ type: String, required: false })
+  idToken: string;
+
+  @Prop({ type: String, required: false })
   password: string;
 
-  @Prop({ required: false })
+  @Prop({ type: String, required: false })
   avatar: string;
 
   @Prop({ type: String, enum: ROLE, required: true })
