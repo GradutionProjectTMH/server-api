@@ -38,18 +38,18 @@ export class DetailDrawingController {
     }
   }
 
-  @ApiOperation({ summary: 'Get all drawing' })
-  @Auth()
-  @Get()
-  async getAllByUser(@User('id') userId: string) {
-    try {
-      const data = await this.detailDrawingService.getAllByUser(userId);
-      return responseSuccessWithData(data);
-    } catch (error) {
-      console.log(error.message);
-      return responseError(error.message);
-    }
-  }
+  // @ApiOperation({ summary: 'Get all drawing' })
+  // @Auth()
+  // @Get()
+  // async getAllByUser(@User('id') userId: string) {
+  //   try {
+  //     const data = await this.detailDrawingService.getAllByUser(userId);
+  //     return responseSuccessWithData(data);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     return responseError(error.message);
+  //   }
+  // }
 
   @ApiOperation({ summary: 'Get a drawing by id' })
   @Auth()

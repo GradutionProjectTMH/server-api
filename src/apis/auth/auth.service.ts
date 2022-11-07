@@ -80,8 +80,9 @@ export class AuthService {
 
       delete userSave.password;
 
+      const profile = await this.userModel.findById(userSave._id).lean();
       return {
-        ...userSave,
+        ...profile,
         token,
       };
     }

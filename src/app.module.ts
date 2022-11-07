@@ -4,34 +4,27 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { JwtStrategy } from './core/strategies/jwt.strategy';
 import { HttpExceptionFilter } from './core/http/http-exception';
 import { ApisModule } from './apis/apis.module';
 import { HelperModule } from './helpers/helper.module';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DB_URI),
-    PassportModule,
-    JwtModule.register({
-      secret: process.env.KEY_SECRET_JWT,
-      signOptions: { expiresIn: '60s' },
-    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
+    CoreModule,
     ApisModule,
     HelperModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    JwtStrategy,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
