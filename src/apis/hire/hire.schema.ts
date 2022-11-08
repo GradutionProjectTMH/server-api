@@ -37,7 +37,7 @@ export class Hire {
   designerId: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: DetailDrawing.name })
-  detailDrawing: string;
+  detailDrawingId: string;
 
   @Prop({ type: Array<ItemFloorDesign> })
   floorDesigns: ItemFloorDesign[];

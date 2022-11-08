@@ -50,7 +50,10 @@ export class HireService {
 
     await this.userService.getById(hireInstance.designerId);
 
-    await this.detailDrawingService.getById(hireInstance.detailDrawing, userId);
+    await this.detailDrawingService.getById(
+      hireInstance.detailDrawingId,
+      userId,
+    );
 
     hireInstance.userId = userId;
 

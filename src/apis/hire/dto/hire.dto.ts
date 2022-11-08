@@ -59,7 +59,7 @@ export class HireDto {
   @ApiProperty()
   @IsOptional()
   @IsObjectId()
-  detailDrawing: string;
+  detailDrawingId: string;
 
   @ApiProperty({ type: [ItemFloorDesign] })
   @IsOptional()

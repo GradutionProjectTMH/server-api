@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import {
   DetailDrawing,
   DetailDrawingDocument,
 } from 'src/apis/detail-drawing/detail-drawing.schema';
 import { removeKeyUndefined } from '../../base/services/base.service';
+import { Hire } from '../hire/hire.schema';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
 import { DetailDrawingFilterDto } from './dto/detail.drawing-filter.dto';
 
@@ -26,7 +27,23 @@ export class DetailDrawingService {
   }
 
   async getById(id: string, userId: string) {
-    const drawing = await this.detailDrawingModel.findOne({ id, userId });
+    const drawing = await this.detailDrawingModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id),
+          userId: new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $lookup: {
+          from: Hire.name,
+          localField: '_id',
+          foreignField: 'detailDrawingId',
+          as: 'detailDrawing',
+        },
+      },
+      { $limit: 1 },
+    ]);
     if (!drawing) throw new Error('Detail drawing does not exists');
 
     return drawing;
