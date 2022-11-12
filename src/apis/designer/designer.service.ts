@@ -24,7 +24,7 @@ export class DesignerService {
 
     const designerQuery = this.designerModel
       .find({})
-      .populate('userId', '_id firstName lastName avatar')
+      .populate('user', '_id firstName lastName avatar')
       .limit(limit)
       .skip(page * limit - limit);
 
@@ -51,6 +51,7 @@ export class DesignerService {
     if (!designer) {
       throw new Error(`Designer with designerId ${designerId} does not exist`);
     }
+
     return designer;
   }
 

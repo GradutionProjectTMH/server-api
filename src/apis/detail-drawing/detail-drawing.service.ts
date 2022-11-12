@@ -27,23 +27,63 @@ export class DetailDrawingService {
   }
 
   async getById(id: string, userId: string) {
-    const drawing = await this.detailDrawingModel.aggregate([
+    const drawings = await this.detailDrawingModel.aggregate([
       {
         $match: {
           _id: new mongoose.Types.ObjectId(id),
           userId: new mongoose.Types.ObjectId(userId),
         },
       },
+      // hires
       {
         $lookup: {
-          from: Hire.name,
+          from: 'hires',
           localField: '_id',
           foreignField: 'detailDrawingId',
-          as: 'detailDrawing',
+          as: 'hire',
+        },
+      },
+      { $unwind: '$hire' },
+      // info designer in hire
+      {
+        $lookup: {
+          from: 'designers',
+          localField: 'hire.designerId',
+          foreignField: 'userId',
+          as: 'hire.designer',
+        },
+      },
+      { $unwind: '$hire.designer' },
+      // info users
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'hire.designerId',
+          foreignField: '_id',
+          as: 'hire.designer.user',
+        },
+      },
+      { $unwind: '$hire.designer.user' },
+      // project
+      {
+        $project: {
+          'hire.designer.createdAt': 0,
+          'hire.designer.updatedAt': 0,
+          'hire.designer.user.createdAt': 0,
+          'hire.designer.user.updatedAt': 0,
+          'hire.designer.user.password': 0,
+          'hire.designer.user.idToken': 0,
+          'hire.designer.user.email': 0,
+          'hire.designer.user.signupType': 0,
+          'hire.designer.user.status': 0,
+          'hire.designer.user.role': 0,
         },
       },
       { $limit: 1 },
     ]);
+
+    const drawing =
+      Array.isArray(drawings) && drawings.length > 0 && drawings[0];
     if (!drawing) throw new Error('Detail drawing does not exists');
 
     return drawing;

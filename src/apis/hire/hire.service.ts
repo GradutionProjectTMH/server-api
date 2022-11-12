@@ -8,6 +8,7 @@ import { DetailDrawingService } from '../detail-drawing/detail-drawing.service';
 import { UserService } from '../user/user.service';
 import { HireFilterDto } from './dto/hire-filter.dto';
 import { HireDto } from './dto/hire.dto';
+import { STATUS_HIRE } from './enum/hire.enum';
 
 @Injectable()
 export class HireService {
@@ -48,6 +49,7 @@ export class HireService {
   async create(data: HireDto, userId: string) {
     const hireInstance = plainToInstance(Hire, data);
 
+    hireInstance.status = STATUS_HIRE.PENDING;
     await this.userService.getById(hireInstance.designerId);
 
     await this.detailDrawingService.getById(

@@ -30,13 +30,25 @@ export type HireDocument = Hire & Document;
 
 @DSchema()
 export class Hire {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    required: true,
+  })
   userId: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    required: true,
+  })
   designerId: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: DetailDrawing.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: DetailDrawing.name,
+    required: true,
+  })
   detailDrawingId: string;
 
   @Prop({ type: Array<ItemFloorDesign> })
@@ -45,7 +57,7 @@ export class Hire {
   @Prop({ type: Array<ItemDesign> })
   houseDesigns: ItemDesign[];
 
-  @Prop({ type: String, enum: STATUS_HIRE })
+  @Prop({ type: String, enum: STATUS_HIRE, required: true })
   status: STATUS_HIRE;
 }
 

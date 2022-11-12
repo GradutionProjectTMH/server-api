@@ -36,3 +36,12 @@ export class Designer {
 }
 
 export const DesignerSchema = SchemaFactory.createForClass(Designer);
+
+DesignerSchema.virtual('user', {
+  ref: 'User',
+  localField: 'userId',
+  foreignField: '_id',
+  justOne: true,
+});
+DesignerSchema.set('toObject', { virtuals: true });
+DesignerSchema.set('toJSON', { virtuals: true });
