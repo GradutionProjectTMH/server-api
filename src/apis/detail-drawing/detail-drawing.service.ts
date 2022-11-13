@@ -43,7 +43,12 @@ export class DetailDrawingService {
           as: 'hire',
         },
       },
-      { $unwind: '$hire' },
+      {
+        $unwind: {
+          path: '$hire',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       // info designer in hire
       {
         $lookup: {
@@ -53,7 +58,12 @@ export class DetailDrawingService {
           as: 'hire.designer',
         },
       },
-      { $unwind: '$hire.designer' },
+      {
+        $unwind: {
+          path: '$hire.designer',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       // info users
       {
         $lookup: {
@@ -63,7 +73,12 @@ export class DetailDrawingService {
           as: 'hire.designer.user',
         },
       },
-      { $unwind: '$hire.designer.user' },
+      {
+        $unwind: {
+          path: '$hire.designer.user',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       // project
       {
         $project: {
@@ -85,6 +100,10 @@ export class DetailDrawingService {
     const drawing =
       Array.isArray(drawings) && drawings.length > 0 && drawings[0];
     if (!drawing) throw new Error('Detail drawing does not exists');
+
+    if (!drawing.hire.userId) {
+      drawing.hire = null;
+    }
 
     return drawing;
   }
