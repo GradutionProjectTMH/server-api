@@ -122,12 +122,15 @@ export class DetailDrawingService {
     const detailDrawing = await this.detailDrawingModel.findById(id).lean();
     if (!detailDrawing) throw new Error('Product id does not exist');
 
+    detailDrawing.userId = detailDrawing.userId.toString();
+    delete detailDrawing._id;
+
     if (userId !== detailDrawing.userId) {
       throw new Error('You can not update detail drawing');
     }
 
     return this.detailDrawingModel.updateOne(
-      { id },
+      { _id: id },
       {
         ...detailDrawing,
         ...removeKeyUndefined(detailDrawingInstance),

@@ -71,6 +71,15 @@ export class DetailDrawing {
   @Prop({ type: Number })
   height: number;
 
+  @Prop({ type: Number })
+  numberOfFloors: number;
+
+  @Prop({ type: Number })
+  heightOfEachFloors: number;
+
+  @Prop({ type: String })
+  themeColor: string;
+
   @Prop({ type: String })
   boundaryImg: string;
 
