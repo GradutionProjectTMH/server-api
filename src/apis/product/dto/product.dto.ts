@@ -7,10 +7,47 @@ import {
   IsNumberString,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 import { PRODUCT_STATUS } from 'src/core/constants/enum';
 import { EnumTransform } from '../../../core/decorators/enum-transform.decorator';
+import { TYPE_PRODUCT } from '../enum/product.enu';
+class VerifyDto {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  name: string;
 
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  data: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  owner: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  paymentToken: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  bounty: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  verifyBy: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  verifiedAt: Date;
+}
 export class ProductDto {
   @ApiProperty({ required: false })
   @IsOptional()
@@ -27,6 +64,12 @@ export class ProductDto {
   @IsNumberString()
   // @Transform((value) => Number(value))
   star: number;
+
+  @ApiProperty({ type: TYPE_PRODUCT, enum: TYPE_PRODUCT, required: false })
+  @IsOptional()
+  @IsEnum(TYPE_PRODUCT)
+  @EnumTransform(TYPE_PRODUCT)
+  type: TYPE_PRODUCT;
 
   @ApiProperty({ required: false })
   @IsOptional()
@@ -53,6 +96,12 @@ export class ProductDto {
   @IsOptional()
   @IsString()
   description: string;
+
+  @ApiProperty({ type: VerifyDto, required: false })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => VerifyDto)
+  verify: VerifyDto;
 
   @ApiProperty({ required: false })
   @IsOptional()
