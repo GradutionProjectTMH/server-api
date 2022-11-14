@@ -10,10 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DesignerService } from 'src/apis/designer/designer.service';
-import {
-  responseError,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { DesignerFilterDto } from './dto/designer-filter.dto';
@@ -29,7 +26,7 @@ export class DesignerController {
   async getAll(@Query() filter: DesignerFilterDto) {
     try {
       const result = await this.designerService.getAll(filter);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -41,7 +38,7 @@ export class DesignerController {
   async getById(@Param('designerId') designerId: string) {
     try {
       const result = await this.designerService.getById(designerId);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -54,7 +51,7 @@ export class DesignerController {
   async create(@Body() data: DesignerDto, @User('id') userId: string) {
     try {
       const result = await this.designerService.create(data, userId);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -70,7 +67,7 @@ export class DesignerController {
   ) {
     try {
       const result = await this.designerService.updateById(designerId, data);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -83,7 +80,7 @@ export class DesignerController {
   async deleteById(@Param('designerId') designerId: string) {
     try {
       const result = await this.designerService.deleteById(designerId);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

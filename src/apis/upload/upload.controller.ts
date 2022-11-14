@@ -16,11 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UploadService } from 'src/apis/upload/upload.service';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { multerMemoryOption } from '../../core/multer/multer.option';
@@ -36,7 +32,7 @@ export class UploadController {
   async getAll(@Query() filter: FileFilterDto) {
     try {
       const data = await this.uploadService.getAll(filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -71,7 +67,7 @@ export class UploadController {
   ) {
     try {
       const data = await this.uploadService.uploadFiles(files, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

@@ -17,11 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ProjectService } from 'src/apis/project/project.service';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { multerDiskOption } from '../../core/multer/multer.option';
@@ -38,7 +34,7 @@ export class ProjectController {
   async getAll(@User('id') userId: string) {
     try {
       const data = await this.projectService.getAllByUser(userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -51,7 +47,7 @@ export class ProjectController {
   async getById(@Param('id') id: string, @User('id') userId: string) {
     try {
       const data = await this.projectService.getById(id, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -98,7 +94,7 @@ export class ProjectController {
   async create(@Body() body: ProjectDto, @User('id') userId: string) {
     try {
       const data = await this.projectService.create(body, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

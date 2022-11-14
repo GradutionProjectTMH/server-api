@@ -12,8 +12,8 @@ import { readFileSync } from 'fs';
 import { FILE_STATUS } from './enums/file-status.enum';
 import { FileFilterDto } from './dtos/file-filter.dto';
 import { UserService } from '../user/user.service';
-import { pagination } from '../../base/services/base.service';
 import { FileDto } from './dtos/file.dto';
+import { pagination } from '../../utils/utils';
 
 interface File {
   key: string;

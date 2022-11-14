@@ -6,7 +6,7 @@ import {
   DetailDrawing,
   DetailDrawingDocument,
 } from 'src/apis/detail-drawing/detail-drawing.schema';
-import { removeKeyUndefined } from '../../base/services/base.service';
+import { removeKeyUndefined } from '../../utils/utils';
 import { Hire } from '../hire/hire.schema';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
 import { DetailDrawingFilterDto } from './dto/detail.drawing-filter.dto';

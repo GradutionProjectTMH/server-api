@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
 import { Hire, HireDocument } from 'src/apis/hire/hire.schema';
-import { pagination } from '../../base/services/base.service';
+import { pagination } from '../../utils/utils';
 import { DetailDrawingService } from '../detail-drawing/detail-drawing.service';
 import { UserService } from '../user/user.service';
 import { HireFilterDto } from './dto/hire-filter.dto';

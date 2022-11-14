@@ -25,7 +25,7 @@ export class Order {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   userId: string;
 
-  @Prop({ type: String, enum: ORDER_STATUS, default: ORDER_STATUS.PENDDING })
+  @Prop({ type: String, enum: ORDER_STATUS, default: ORDER_STATUS.PENDING })
   status: ORDER_STATUS;
 
   @Prop({ type: Address })

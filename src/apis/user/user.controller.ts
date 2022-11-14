@@ -16,15 +16,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserService } from 'src/apis/user/user.service';
-import {
-  responseError,
-  responseSuccessWithData,
-} from '../../base/base.controller';
-import { removeFile } from '../../base/services/base.service';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { ROLE } from '../../core/constants/enum';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { multerMemoryOption } from '../../core/multer/multer.option';
+import { removeFile } from '../../utils/utils';
 import { UserDto } from './dto/user.dto';
 
 @ApiTags('user')
@@ -38,7 +35,7 @@ export class UserController {
   async getAll() {
     try {
       const data = await this.userService.getAll();
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -51,7 +48,7 @@ export class UserController {
   async getById(@User('id') userId: string) {
     try {
       const data = await this.userService.getById(userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -83,7 +80,7 @@ export class UserController {
   ) {
     try {
       const data = await this.userService.uploadAvatar(userId, avatar);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       removeFile(avatar.filename);
@@ -97,7 +94,7 @@ export class UserController {
   async updateById(@Body() body: UserDto, @User('id') userId: string) {
     try {
       const data = await this.userService.updateProfile(body, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

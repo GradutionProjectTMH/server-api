@@ -21,25 +21,25 @@ export enum USER_STATUS {
 }
 
 export enum PRODUCT_STATUS {
-  PENDDING = 'pendding',
+  PENDING = 'pending',
   APPROVE = 'approve',
   REJECTED = 'rejected',
 }
 
 export enum ORDER_STATUS {
-  PENDDING = 'pendding',
+  PENDING = 'pending',
   APPROVE = 'approve',
   REJECTED = 'rejected',
 }
 
 export enum COMMENT_SORT {
-  NEWST = 'newst',
+  NEWTS = 'newts',
   DESCENDING_STAR = 'descending_star',
   ASCENDING_STAR = 'ascending_star',
 }
 
 export enum PRODUCT_SORT {
-  NEWST = 'newst',
+  NEWTS = 'newts',
   HIGHT_TO_LOW = 'hight_to_low',
   LOW_TO_HIGHT = 'low_to_hight',
   DESCENDING_STAR = 'descending_star',

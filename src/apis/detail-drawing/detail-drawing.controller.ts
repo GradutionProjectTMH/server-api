@@ -10,11 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DetailDrawingService } from 'src/apis/detail-drawing/detail-drawing.service';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
@@ -31,7 +27,7 @@ export class DetailDrawingController {
   async getAll(@Query() filter: DetailDrawingFilterDto) {
     try {
       const data = await this.detailDrawingService.getAll(filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -44,7 +40,7 @@ export class DetailDrawingController {
   // async getAllByUser(@User('id') userId: string) {
   //   try {
   //     const data = await this.detailDrawingService.getAllByUser(userId);
-  //     return responseSuccessWithData(data);
+  //     return responseSuccess(data);
   //   } catch (error) {
   //     console.log(error.message);
   //     return responseError(error.message);
@@ -57,7 +53,7 @@ export class DetailDrawingController {
   async getById(@Param('id') id: string, @User('id') userId: string) {
     try {
       const data = await this.detailDrawingService.getById(id, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -70,7 +66,7 @@ export class DetailDrawingController {
   async create(@Body() body: DetailDrawingDto, @User('id') userId: string) {
     try {
       const data = await this.detailDrawingService.create(body, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
 import { Project, ProjectDocument } from 'src/apis/project/project.schema';
-import { removeKeyUndefined } from '../../base/services/base.service';
+import { removeKeyUndefined } from '../../utils/utils';
 import { User, UserDocument } from '../user/user.schema';
 import { ProjectDto } from './dto/project.dto';
 

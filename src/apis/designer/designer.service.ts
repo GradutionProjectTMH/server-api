@@ -3,12 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
 import { Designer, DesignerDocument } from 'src/apis/designer/designer.schema';
-import {
-  pagination,
-  removeKeyUndefined,
-} from '../../base/services/base.service';
 import { LIMIT, PAGE } from '../../core/constants/enum';
 import { logoToolDesign } from '../../utils/tool-design';
+import { pagination, removeKeyUndefined } from '../../utils/utils';
 import { DesignerFilterDto } from './dto/designer-filter.dto';
 import { DesignerDto } from './dto/designer.dto';
 

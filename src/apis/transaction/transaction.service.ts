@@ -6,7 +6,7 @@ import {
   Transaction,
   TransactionDocument,
 } from 'src/apis/transaction/transaction.schema';
-import { removeKeyUndefined } from '../../base/services/base.service';
+import { removeKeyUndefined } from '../../utils/utils';
 import { TransactionDto } from './dto/transaction.dto';
 
 @Injectable()

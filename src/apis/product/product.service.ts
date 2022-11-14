@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { FilterQuery, Model } from 'mongoose';
-import {
-  pagination,
-  removeKeyUndefined,
-} from '../../base/services/base.service';
+import { pagination, removeKeyUndefined } from '../../utils/utils';
 import {
   LIMIT,
   PAGE,
@@ -57,7 +54,7 @@ export class ProductService {
         ? { unitPrice: -1 }
         : sortBy == PRODUCT_SORT.LOW_TO_HIGHT
         ? { unitPrice: 1 }
-        : sortBy == PRODUCT_SORT.NEWST
+        : sortBy == PRODUCT_SORT.NEWTS
         ? { createdAt: -1 }
         : {};
 
@@ -90,7 +87,7 @@ export class ProductService {
   async create(data: ProductDto, userId: string) {
     const productInstance = plainToInstance(Product, data);
 
-    productInstance.status = PRODUCT_STATUS.PENDDING;
+    productInstance.status = PRODUCT_STATUS.PENDING;
     productInstance.createdBy = userId;
 
     const newProduct = new this.productModel(productInstance);

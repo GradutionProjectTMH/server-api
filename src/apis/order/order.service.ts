@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { FilterQuery, Model } from 'mongoose';
-import {
-  pagination,
-  removeKeyUndefined,
-} from '../../base/services/base.service';
+import { pagination, removeKeyUndefined } from '../../utils/utils';
 import { ORDER_STATUS, ROLE } from '../../core/constants/enum';
 import { ProductService } from '../product/product.service';
 import { OrderFilterDto } from './dto/order-filter.dto';
@@ -114,7 +111,7 @@ export class OrderService {
   async create(data: OrderDto, userId: string) {
     const orderInstance = plainToInstance(Order, data);
 
-    orderInstance.status = ORDER_STATUS.PENDDING;
+    orderInstance.status = ORDER_STATUS.PENDING;
     orderInstance.userId = userId;
 
     for (const product of orderInstance.products) {
@@ -134,7 +131,7 @@ export class OrderService {
     const orderInstance = plainToInstance(Order, data);
 
     if (role !== ROLE.SELLER) {
-      if (order.status !== ORDER_STATUS.PENDDING) {
+      if (order.status !== ORDER_STATUS.PENDING) {
         throw new Error('You can not edit order');
       }
       delete orderInstance.status;

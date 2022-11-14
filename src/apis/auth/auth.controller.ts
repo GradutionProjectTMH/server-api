@@ -1,10 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { IResponse } from 'src/core/interfaces/IResponse';
-import {
-  responseError,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { AuthService } from './auth.service';
@@ -21,7 +18,7 @@ export class AuthController {
   async loginByEmail(@Body() data: LoginByEmailDto): Promise<IResponse<any>> {
     try {
       const result = await this.authService.loginByEmail(data);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -33,7 +30,7 @@ export class AuthController {
   async loginByGoogle(@Body() data: LoginByGoogleDto): Promise<IResponse<any>> {
     try {
       const result = await this.authService.loginByGoogle(data);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -45,7 +42,7 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto): Promise<IResponse<any>> {
     try {
       const data = await this.authService.register(registerDto);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -58,7 +55,7 @@ export class AuthController {
   async checkToken(@User('id') userId: string): Promise<IResponse<any>> {
     try {
       const result = await this.authService.checkToken(userId);
-      return responseSuccessWithData(result);
+      return responseSuccess(result);
     } catch (error) {
       console.log(error);
       return responseError(error.message);

@@ -21,7 +21,7 @@ export class ProductFilterDto extends PaginationDto {
 
   @ApiProperty({
     required: false,
-    example: PRODUCT_SORT.NEWST,
+    example: PRODUCT_SORT.NEWTS,
     enum: PRODUCT_SORT,
   })
   @IsOptional()

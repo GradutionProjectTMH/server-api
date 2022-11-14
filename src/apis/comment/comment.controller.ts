@@ -9,11 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { CommentService } from './comment.service';
 import { CommentFilterDto } from './dto/comment-filter.dto';
 import { CommentDto } from './dto/comment.dto';
@@ -28,7 +24,7 @@ export class CommentController {
   async getAll(@Query() filter: CommentFilterDto) {
     try {
       const data = await this.commentService.getAll();
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -40,7 +36,7 @@ export class CommentController {
   async getById(@Param('id') id: string) {
     try {
       const data = await this.commentService.getById(id);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);

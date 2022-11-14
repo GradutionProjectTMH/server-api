@@ -11,17 +11,14 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/core/decorators/auth.decorator';
 import { User } from 'src/core/decorators/user.decorator';
-import {
-  responseError,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { ROLE } from '../../core/constants/enum';
 import { ProductFilterDto } from './dto/product-filter.dto';
 import { ProductDto } from './dto/product.dto';
 import { ProductService } from './product.service';
 
-@ApiTags('product')
-@Controller('product')
+@ApiTags('products')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
@@ -30,7 +27,7 @@ export class ProductController {
   async getAll(@Query() filter: ProductFilterDto) {
     try {
       const data = await this.productService.getAll(filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -42,7 +39,7 @@ export class ProductController {
   async getById(@Param('id') id: string) {
     try {
       const data = await this.productService.getById(id);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -55,7 +52,7 @@ export class ProductController {
   async create(@Body() product: ProductDto, @User('id') userId: string) {
     try {
       const data = await this.productService.create(product, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -78,7 +75,7 @@ export class ProductController {
         userId,
         role,
       );
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -92,7 +89,7 @@ export class ProductController {
     try {
       const data = await this.productService.deleteById(id, userId);
 
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);

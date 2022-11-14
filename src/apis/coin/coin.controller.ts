@@ -8,11 +8,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { CoinService } from './coin.service';
 import { CoinDto } from './dto/coin.dto';
@@ -28,7 +24,7 @@ export class CoinController {
   async getAll() {
     try {
       const data = await this.coinService.getAll();
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -41,7 +37,7 @@ export class CoinController {
   async getById(@Param('id') id: string) {
     try {
       const data = await this.coinService.getById(id);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -54,7 +50,7 @@ export class CoinController {
   async create(@Body() body: CoinDto) {
     try {
       const data = await this.coinService.create(body);
-      return responseSuccessWithData(data, 'create coin success');
+      return responseSuccess(data, 'create coin success');
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

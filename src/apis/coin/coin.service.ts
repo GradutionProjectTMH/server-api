@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
-import { removeKeyUndefined } from '../../base/services/base.service';
+import { removeKeyUndefined } from '../../utils/utils';
 import { Coin, CoinDocument } from './coin.schema';
 import { CoinDto } from './dto/coin.dto';
 
@@ -47,7 +47,7 @@ export class CoinService {
     return this.coinModel.findByIdAndUpdate(
       id,
       {
-        ...Coin,
+        ...coin,
         ...removeKeyUndefined(coinInstance),
         updatedAt: new Date(),
       },

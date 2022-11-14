@@ -9,11 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TransactionService } from 'src/apis/transaction/transaction.service';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { TransactionDto } from './dto/transaction.dto';
@@ -29,7 +25,7 @@ export class TransactionController {
   async getAll() {
     try {
       const data = await this.transactionService.getAll();
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -42,7 +38,7 @@ export class TransactionController {
   async getById(@Param('id') id: string, @User('id') userId: string) {
     try {
       const data = await this.transactionService.getById(id, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);
@@ -55,7 +51,7 @@ export class TransactionController {
   async create(@Body() body: TransactionDto, @User('id') userId: string) {
     try {
       const data = await this.transactionService.create(body, userId);
-      return responseSuccessWithData(data, 'create transaction success');
+      return responseSuccess(data, 'create transaction success');
     } catch (error) {
       console.log(error.message);
       return responseError(error.message);

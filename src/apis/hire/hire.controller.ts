@@ -10,11 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HireService } from 'src/apis/hire/hire.service';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { HireFilterDto } from './dto/hire-filter.dto';
@@ -31,7 +27,7 @@ export class HireController {
   async getAll(@Query() filter: HireFilterDto) {
     try {
       const data = await this.hireService.getAll(filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -44,7 +40,7 @@ export class HireController {
   async getById(@Param('id') id: string) {
     try {
       const data = await this.hireService.getById(id);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);

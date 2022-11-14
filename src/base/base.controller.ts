@@ -1,11 +1,4 @@
-const responseSuccess = (message = 'Success') => {
-  return {
-    success: true,
-    message,
-  };
-};
-
-const responseSuccessWithData = (data: any, message = 'Success') => {
+const responseSuccess = (data: any, message = 'Success') => {
   return {
     success: true,
     message,
@@ -20,4 +13,4 @@ const responseError = (message: string) => {
   };
 };
 
-export { responseSuccess, responseSuccessWithData, responseError };
+export { responseSuccess, responseError };

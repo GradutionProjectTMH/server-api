@@ -9,11 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import {
-  responseError,
-  responseSuccess,
-  responseSuccessWithData,
-} from '../../base/base.controller';
+import { responseError, responseSuccess } from '../../base/base.controller';
 import { ROLE } from '../../core/constants/enum';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
@@ -32,7 +28,7 @@ export class OrderController {
   async getAllByUser(@Query() filter: OrderFilterDto) {
     try {
       const data = await this.orderService.getAll(filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -48,7 +44,7 @@ export class OrderController {
   ) {
     try {
       const data = await this.orderService.getBySeller(userId, filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -61,7 +57,7 @@ export class OrderController {
   async getByUser(@User('id') userId: string, @Query() filter: OrderFilterDto) {
     try {
       const data = await this.orderService.getByUser(userId, filter);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
@@ -74,7 +70,7 @@ export class OrderController {
   async getById(@Param('id') id: string, @User('id') userId: string) {
     try {
       const data = await this.orderService.getById(id, userId);
-      return responseSuccessWithData(data);
+      return responseSuccess(data);
     } catch (error) {
       console.log(error);
       return responseError(error.message);
