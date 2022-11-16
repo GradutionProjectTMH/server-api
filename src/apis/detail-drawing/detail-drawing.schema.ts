@@ -4,7 +4,7 @@ import { DSchema } from '../../core/decorators/schema.decorator';
 import { User } from '../user/user.schema';
 import { DETAIL_DRAWING_STATUS } from './enum/detail-drawing.enum';
 
-@Schema()
+@Schema({ _id: false })
 class ExpectedMaterial {
   @Prop({ type: String })
   name: string;
@@ -13,7 +13,7 @@ class ExpectedMaterial {
   amount: number;
 }
 
-@Schema()
+@Schema({ _id: false })
 class Room {
   @Prop({ type: String })
   name: string;
@@ -22,7 +22,7 @@ class Room {
   amount: number;
 }
 
-@Schema()
+@Schema({ _id: false })
 class AdditionalInformation {
   @Prop({ type: String })
   members: string;
@@ -46,7 +46,7 @@ class AdditionalInformation {
   businessInHouse: boolean;
 }
 
-@Schema()
+@Schema({ _id: false })
 class BountyReward {
   @Prop({ type: String })
   coinId: string;

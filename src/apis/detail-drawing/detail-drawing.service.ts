@@ -31,7 +31,7 @@ export class DetailDrawingService {
       {
         $match: {
           _id: new mongoose.Types.ObjectId(id),
-          userId: new mongoose.Types.ObjectId(userId),
+          // userId: new mongoose.Types.ObjectId(userId),
         },
       },
       // hires

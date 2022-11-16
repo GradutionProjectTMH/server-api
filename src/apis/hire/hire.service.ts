@@ -68,7 +68,10 @@ export class HireService {
     const hire = await this.hireModel.findById(id).lean();
     if (!hire) throw new Error('Hire does not exist');
 
-    if (userId !== hire.userId && userId !== hire.designerId) {
+    if (
+      userId !== hire.userId.toString() &&
+      userId !== hire.designerId.toString()
+    ) {
       throw new Error('You can not update hire');
     }
 
