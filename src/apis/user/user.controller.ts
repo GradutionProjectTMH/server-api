@@ -6,6 +6,7 @@ import {
   Body,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -22,6 +23,7 @@ import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { multerMemoryOption } from '../../core/multer/multer.option';
 import { removeFile } from '../../utils/utils';
+import { UserFilterDto } from './dto/user-filter.dto';
 import { UserDto } from './dto/user.dto';
 
 @ApiTags('user')
@@ -32,9 +34,9 @@ export class UserController {
   @ApiOperation({ summary: 'Get all user' })
   // @Auth(ROLE.ADMIN)
   @Get()
-  async getAll() {
+  async getAll(@Query() filter: UserFilterDto) {
     try {
-      const data = await this.userService.getAll();
+      const data = await this.userService.getAll(filter);
       return responseSuccess(data);
     } catch (error) {
       console.log(error.message);

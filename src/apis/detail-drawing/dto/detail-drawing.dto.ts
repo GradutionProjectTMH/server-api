@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsEnum,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   ValidateNested,
@@ -47,43 +48,6 @@ class BountyReward {
   @IsOptional()
   @IsNumber()
   amount: number;
-}
-
-class AdditionalInformation {
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  members: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  titles: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsBoolean()
-  wallpaper: boolean;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  budget: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  location: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsBoolean()
-  locatedAtAlley: boolean;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsBoolean()
-  businessInHouse: boolean;
 }
 
 export class DetailDrawingDto {
@@ -148,11 +112,10 @@ export class DetailDrawingDto {
   @Type(() => BountyReward)
   bountyRewards: BountyReward[];
 
-  @ApiProperty({ type: AdditionalInformation })
-  @ValidateNested()
+  @ApiProperty()
   @IsOptional()
-  @Type(() => AdditionalInformation)
-  additionalInformation: AdditionalInformation;
+  @IsObject()
+  additionalInformation: Record<string, any>;
 
   @ApiProperty({ type: DETAIL_DRAWING_STATUS, enum: DETAIL_DRAWING_STATUS })
   @IsOptional()

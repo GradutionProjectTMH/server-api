@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Mixed } from 'mongoose';
 import { DSchema } from '../../core/decorators/schema.decorator';
 import { User } from '../user/user.schema';
 import { DETAIL_DRAWING_STATUS } from './enum/detail-drawing.enum';
@@ -20,30 +20,6 @@ class Room {
 
   @Prop({ type: Number })
   amount: number;
-}
-
-@Schema({ _id: false })
-class AdditionalInformation {
-  @Prop({ type: String })
-  members: string;
-
-  @Prop({ type: String })
-  titles: string;
-
-  @Prop({ type: Boolean })
-  wallpaper: boolean;
-
-  @Prop({ type: String })
-  budget: string;
-
-  @Prop({ type: String })
-  location: string;
-
-  @Prop({ type: Boolean })
-  locatedAtAlley: boolean;
-
-  @Prop({ type: Boolean })
-  businessInHouse: boolean;
 }
 
 @Schema({ _id: false })
@@ -95,8 +71,8 @@ export class DetailDrawing {
   @Prop({ type: Array<BountyReward> })
   bountyRewards: BountyReward[];
 
-  @Prop({ type: AdditionalInformation })
-  additionalInformation: AdditionalInformation;
+  @Prop({ type: Object })
+  additionalInformation: Mixed;
 
   @Prop({ type: String, enum: DETAIL_DRAWING_STATUS })
   status: DETAIL_DRAWING_STATUS;

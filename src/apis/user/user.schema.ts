@@ -1,4 +1,4 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ROLE, USER_STATUS } from 'src/core/constants/enum';
 import { DSchema } from 'src/core/decorators/schema.decorator';
@@ -7,6 +7,33 @@ import { BaseSchema } from '../../base/schemas/base.schem';
 import { SIGNUP_TYPE } from './enum/user.enum';
 
 export type UserDocument = User & Document;
+
+@Schema()
+class ToolDesign {
+  @Prop()
+  name: string;
+
+  @Prop()
+  logo: string;
+}
+
+@Schema()
+class Project {
+  @Prop({ type: ToolDesign })
+  tool: ToolDesign;
+
+  @Prop()
+  url: string;
+}
+
+@Schema()
+class Profile {
+  @Prop({ required: false, type: String })
+  experience: string;
+
+  @Prop({ type: Array<Project> })
+  projects: Project[];
+}
 
 @DSchema()
 export class User extends BaseSchema {
@@ -39,6 +66,9 @@ export class User extends BaseSchema {
 
   @Prop({ type: Address })
   address: Address;
+
+  @Prop({ type: Profile })
+  profile: Profile;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

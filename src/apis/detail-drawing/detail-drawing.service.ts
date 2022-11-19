@@ -49,12 +49,11 @@ export class DetailDrawingService {
           preserveNullAndEmptyArrays: true,
         },
       },
-      // info designer in hire
       {
         $lookup: {
-          from: 'designers',
+          from: 'users',
           localField: 'hire.designerId',
-          foreignField: 'userId',
+          foreignField: '_id',
           as: 'hire.designer',
         },
       },
@@ -64,34 +63,17 @@ export class DetailDrawingService {
           preserveNullAndEmptyArrays: true,
         },
       },
-      // info users
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'hire.designerId',
-          foreignField: '_id',
-          as: 'hire.designer.user',
-        },
-      },
-      {
-        $unwind: {
-          path: '$hire.designer.user',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
       // project
       {
         $project: {
           'hire.designer.createdAt': 0,
           'hire.designer.updatedAt': 0,
-          'hire.designer.user.createdAt': 0,
-          'hire.designer.user.updatedAt': 0,
-          'hire.designer.user.password': 0,
-          'hire.designer.user.idToken': 0,
-          'hire.designer.user.email': 0,
-          'hire.designer.user.signupType': 0,
-          'hire.designer.user.status': 0,
-          'hire.designer.user.role': 0,
+          'hire.designer.password': 0,
+          'hire.designer.idToken': 0,
+          'hire.designer.email': 0,
+          'hire.designer.signupType': 0,
+          'hire.designer.status': 0,
+          'hire.designer.role': 0,
         },
       },
       { $limit: 1 },
