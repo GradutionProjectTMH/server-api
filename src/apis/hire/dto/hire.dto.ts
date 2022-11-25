@@ -4,6 +4,7 @@ import {
   IsBoolean,
   IsEnum,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   IsUrl,
@@ -30,6 +31,11 @@ class ItemDesign {
   @IsOptional()
   @IsBoolean()
   isChoose: boolean;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsObject()
+  materials: Record<string, any>;
 }
 
 class ItemFloorDesign {
@@ -43,6 +49,24 @@ class ItemFloorDesign {
   @ValidateNested({ each: true })
   @Type(() => ItemDesign)
   designs: ItemDesign[];
+
+  @ApiProperty()
+  @IsOptional()
+  @IsBoolean()
+  status: boolean;
+}
+
+class ItemHouseDesign {
+  @ApiProperty({ type: [ItemDesign] })
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ItemDesign)
+  designs: ItemDesign[];
+
+  @ApiProperty()
+  @IsOptional()
+  @IsBoolean()
+  status: boolean;
 }
 
 export class HireDto {
@@ -67,11 +91,11 @@ export class HireDto {
   @Type(() => ItemFloorDesign)
   floorDesigns: ItemFloorDesign[];
 
-  @ApiProperty({ type: [ItemDesign] })
+  @ApiProperty({ type: [ItemHouseDesign] })
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => ItemDesign)
-  houseDesigns: ItemDesign[];
+  @Type(() => ItemHouseDesign)
+  houseDesigns: ItemHouseDesign[];
 
   @ApiProperty({ enum: STATUS_HIRE })
   @IsOptional()

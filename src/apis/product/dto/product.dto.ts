@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
-  IsArray,
   IsEnum,
   IsNumber,
   IsNumberString,
@@ -61,7 +60,7 @@ export class ProductDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumberString()
+  @IsNumber()
   // @Transform((value) => Number(value))
   star: number;
 
@@ -73,19 +72,19 @@ export class ProductDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumberString()
+  @IsNumber()
   // @Transform((value) => Number(value))
   oldPrice: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumberString()
+  @IsNumber()
   // @Transform((value) => Number(value))
   price: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumberString()
+  @IsNumber()
   // @Transform((value) => Number(value))
   sale: number;
 
@@ -97,11 +96,9 @@ export class ProductDto {
   @IsString()
   description: string;
 
-  @ApiProperty({ type: VerifyDto, required: false })
+  @ApiProperty({ required: false })
   @IsOptional()
-  @ValidateNested()
-  @Type(() => VerifyDto)
-  verify: VerifyDto;
+  verify: Record<string, any>;
 
   @ApiProperty({ required: false })
   @IsOptional()

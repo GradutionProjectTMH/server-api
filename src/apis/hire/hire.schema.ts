@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Mixed } from 'mongoose';
 import { DSchema } from '../../core/decorators/schema.decorator';
 import { DetailDrawing } from '../detail-drawing/detail-drawing.schema';
 import { User } from '../user/user.schema';
@@ -15,6 +15,9 @@ class ItemDesign {
 
   @Prop({ type: Boolean })
   isChoose: boolean;
+
+  @Prop({ type: Object })
+  materials: Mixed;
 }
 
 @Schema()
@@ -24,6 +27,18 @@ class ItemFloorDesign {
 
   @Prop({ type: Array<ItemDesign> })
   designs: ItemDesign[];
+
+  @Prop({ type: Boolean })
+  status: boolean;
+}
+
+@Schema()
+class ItemHouseDesign {
+  @Prop({ type: Array<ItemDesign> })
+  designs: ItemDesign[];
+
+  @Prop({ type: Boolean })
+  status: boolean;
 }
 
 export type HireDocument = Hire & Document;
@@ -54,8 +69,8 @@ export class Hire {
   @Prop({ type: Array<ItemFloorDesign> })
   floorDesigns: ItemFloorDesign[];
 
-  @Prop({ type: Array<ItemDesign> })
-  houseDesigns: ItemDesign[];
+  @Prop({ type: Array<ItemHouseDesign> })
+  houseDesigns: ItemHouseDesign[];
 
   @Prop({ type: String, enum: STATUS_HIRE, required: true })
   status: STATUS_HIRE;

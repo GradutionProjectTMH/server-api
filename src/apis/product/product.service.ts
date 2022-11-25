@@ -87,7 +87,7 @@ export class ProductService {
   async create(data: ProductDto, userId: string) {
     const productInstance = plainToInstance(Product, data);
 
-    productInstance.status = PRODUCT_STATUS.PENDING;
+    productInstance.status = PRODUCT_STATUS.APPROVE;
     productInstance.createdBy = userId;
 
     const newProduct = new this.productModel(productInstance);

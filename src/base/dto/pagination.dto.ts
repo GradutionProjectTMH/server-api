@@ -5,11 +5,11 @@ import { LIMIT, PAGE } from '../../core/constants/enum';
 export class PaginationDto {
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  // @IsNumber()
   limit: number = LIMIT;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  // @IsNumber()
   page: number = PAGE;
 }
