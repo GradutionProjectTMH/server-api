@@ -4,6 +4,7 @@ import {
   DetailDrawing,
   DetailDrawingSchema,
 } from 'src/apis/detail-drawing/detail-drawing.schema';
+import { Product, ProductSchema } from '../product/product.schema';
 import { DetailDrawingController } from './detail-drawing.controller';
 import { DetailDrawingService } from './detail-drawing.service';
 
@@ -11,6 +12,7 @@ import { DetailDrawingService } from './detail-drawing.service';
   imports: [
     MongooseModule.forFeature([
       { name: DetailDrawing.name, schema: DetailDrawingSchema },
+      { name: Product.name, schema: ProductSchema },
     ]),
   ],
   controllers: [DetailDrawingController],

@@ -34,8 +34,7 @@ class ItemDesign {
 
   @ApiProperty()
   @IsOptional()
-  @IsObject()
-  materials: Record<string, any>;
+  materials: any;
 }
 
 class ItemFloorDesign {

@@ -8,6 +8,7 @@ import {
 } from 'src/apis/detail-drawing/detail-drawing.schema';
 import { removeKeyUndefined } from '../../utils/utils';
 import { Hire } from '../hire/hire.schema';
+import { Product, ProductDocument } from '../product/product.schema';
 import { DetailDrawingDto } from './dto/detail-drawing.dto';
 import { DetailDrawingFilterDto } from './dto/detail.drawing-filter.dto';
 
@@ -16,6 +17,8 @@ export class DetailDrawingService {
   constructor(
     @InjectModel(DetailDrawing.name)
     private readonly detailDrawingModel: Model<DetailDrawingDocument>,
+    @InjectModel(Product.name)
+    private readonly productModel: Model<ProductDocument>,
   ) {}
 
   async getAll(filter: DetailDrawingFilterDto) {
@@ -87,7 +90,7 @@ export class DetailDrawingService {
       drawing.hire = null;
     }
 
-    return drawing;
+    return this.lookupProduct(drawing);
   }
 
   async create(data: DetailDrawingDto, userId: string) {
@@ -131,5 +134,40 @@ export class DetailDrawingService {
     await this.detailDrawingModel.deleteOne({ id });
 
     return detailDrawing;
+  }
+
+  private async lookupProduct(drawing: any) {
+    let productIds = [];
+    if (!drawing.hire) return drawing;
+    drawing.hire.houseDesigns.forEach((houseDesign) => {
+      houseDesign.designs.map((design) => {
+        productIds = [...productIds, ...design.materials];
+      });
+    });
+
+    const products = await this.productModel
+      .find({ _id: { $in: [...new Set(productIds)] } })
+      .lean();
+
+    drawing.hire.houseDesigns = drawing.hire.houseDesigns.map((houseDesign) => {
+      return {
+        designs: houseDesign.designs.map((design) => {
+          return {
+            coHomeUrl: design.coHomeUrl,
+            image: design.image,
+            isChoose: design.isChoose,
+            materials: design.materials.map(
+              (material) =>
+                products.filter(
+                  (product) => product._id.toString() === material,
+                )[0],
+            ),
+          };
+        }),
+        status: houseDesign.status,
+      };
+    });
+
+    return drawing;
   }
 }

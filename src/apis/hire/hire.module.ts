@@ -12,6 +12,7 @@ import {
   DetailDrawingSchema,
 } from '../detail-drawing/detail-drawing.schema';
 import { UploadService } from '../upload/upload.service';
+import { Product, ProductSchema } from '../product/product.schema';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UploadService } from '../upload/upload.service';
       { name: User.name, schema: UserSchema },
       { name: Upload.name, schema: UploadSchema },
       { name: DetailDrawing.name, schema: DetailDrawingSchema },
+      { name: Product.name, schema: ProductSchema },
     ]),
   ],
   controllers: [HireController],
