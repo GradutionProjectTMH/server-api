@@ -17,6 +17,7 @@ import { HireModule } from 'src/apis/hire/hire.module';
 import { TransactionModule } from 'src/apis/transaction/transaction.module';
 import { CoinModule } from 'src/apis/coin/coin.module';
 import { EnvironmentModule } from 'src/apis/environment/environment.module';
+import { TextRazorModule } from './text-razor/text-razor.module';
 @Module({
   imports: [
     AuthModule,
@@ -31,6 +32,7 @@ import { EnvironmentModule } from 'src/apis/environment/environment.module';
     TransactionModule,
     CoinModule,
     EnvironmentModule,
+    TextRazorModule,
   ],
   controllers: [],
   providers: [],
