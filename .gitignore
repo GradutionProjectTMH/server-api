@@ -1,6 +1,6 @@
 # compiled output
 # /public
-/dist
+# /dist
 /node_modules
 
 # Logs

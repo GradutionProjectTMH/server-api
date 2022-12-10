@@ -24,9 +24,9 @@ export class HireController {
   @ApiOperation({ summary: 'Get all hire' })
   @Auth()
   @Get()
-  async getAll(@Query() filter: HireFilterDto) {
+  async getAll(@Query() filter: HireFilterDto, @User('id') userId: string) {
     try {
-      const data = await this.hireService.getAll(filter);
+      const data = await this.hireService.getAll(filter, userId);
       return responseSuccess(data);
     } catch (error) {
       console.log(error);

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { Hire, HireDocument } from 'src/apis/hire/hire.schema';
 import { pagination } from '../../utils/utils';
 import { DetailDrawingService } from '../detail-drawing/detail-drawing.service';
@@ -19,14 +19,28 @@ export class HireService {
     private readonly detailDrawingService: DetailDrawingService,
   ) {}
 
-  async getAll(filter: HireFilterDto) {
+  async getAll(filter: HireFilterDto, userId: string) {
     const { limit, page } = filter;
-    const query = {};
+    const query: PipelineStage[] = [
+      { $match: {} },
+      {
+        $lookup: {
+          from: 'detaildrawings',
+          localField: 'detailDrawingId',
+          foreignField: '_id',
+          as: 'detailDrawing',
+        },
+      },
+      {
+        $project: {
+          detailDrawingId: 0,
+        },
+      },
+    ];
 
     const countDocument = this.hireModel.countDocuments(query);
     const getHire = this.hireModel
-      .find(query)
-      // .populate('restaurant', '-createdAt -updatedAt')
+      .aggregate(query)
       .skip(page * limit - limit)
       // .sort(sort)
       .limit(limit);
