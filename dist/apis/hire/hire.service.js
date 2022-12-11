@@ -41,13 +41,22 @@ let HireService = class HireService {
                 },
             },
             {
-                $project: {
-                    detailDrawingId: 0,
+                $unwind: {
+                    path: '$detailDrawing',
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'designerId',
+                    foreignField: '_id',
+                    as: 'designer',
                 },
             },
             {
                 $unwind: {
-                    path: '$detailDrawing',
+                    path: '$designer',
                     preserveNullAndEmptyArrays: true,
                 },
             },
