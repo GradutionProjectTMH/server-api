@@ -36,6 +36,12 @@ export class HireService {
           detailDrawingId: 0,
         },
       },
+      {
+        $unwind: {
+          path: '$detailDrawing',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
     ];
 
     const countDocument = this.hireModel.countDocuments(query);

@@ -45,6 +45,12 @@ let HireService = class HireService {
                     detailDrawingId: 0,
                 },
             },
+            {
+                $unwind: {
+                    path: '$detailDrawing',
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
         ];
         const countDocument = this.hireModel.countDocuments(query);
         const getHire = this.hireModel
