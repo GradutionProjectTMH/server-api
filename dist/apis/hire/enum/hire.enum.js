@@ -6,5 +6,6 @@ var STATUS_HIRE;
     STATUS_HIRE["PENDING"] = "pending";
     STATUS_HIRE["ACCEPT"] = "accept";
     STATUS_HIRE["CANCELED"] = "canceled";
+    STATUS_HIRE["COMPLETE"] = "complete";
 })(STATUS_HIRE = exports.STATUS_HIRE || (exports.STATUS_HIRE = {}));
 //# sourceMappingURL=hire.enum.js.map
