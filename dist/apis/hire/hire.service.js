@@ -31,7 +31,7 @@ let HireService = class HireService {
     async getAll(filter, userId) {
         const { limit, page } = filter;
         const query = [
-            { $match: {} },
+            { $match: { userId: new mongoose_2.default.Types.ObjectId(userId) } },
             {
                 $lookup: {
                     from: 'detaildrawings',
@@ -62,10 +62,7 @@ let HireService = class HireService {
             },
         ];
         const countDocument = this.hireModel.countDocuments(query);
-        const getHire = this.hireModel
-            .aggregate(query)
-            .skip(page * limit - limit)
-            .limit(limit);
+        const getHire = this.hireModel.aggregate(query);
         const [total, hires] = await Promise.all([countDocument, getHire]);
         return {
             totalPage: (0, utils_1.pagination)(total, limit),
