@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const hire_service_1 = require("./hire.service");
 const base_controller_1 = require("../../base/base.controller");
+const enum_1 = require("../../core/constants/enum");
 const auth_decorator_1 = require("../../core/decorators/auth.decorator");
 const user_decorator_1 = require("../../core/decorators/user.decorator");
 const hire_filter_dto_1 = require("./dto/hire-filter.dto");
@@ -25,9 +26,9 @@ let HireController = class HireController {
     constructor(hireService) {
         this.hireService = hireService;
     }
-    async getAll(filter, userId) {
+    async getAll(filter, userId, userRole) {
         try {
-            const data = await this.hireService.getAll(filter, userId);
+            const data = await this.hireService.getAll(filter, userId, userRole);
             return (0, base_controller_1.responseSuccess)(data);
         }
         catch (error) {
@@ -82,8 +83,9 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, user_decorator_1.User)('id')),
+    __param(2, (0, user_decorator_1.User)('role')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [hire_filter_dto_1.HireFilterDto, String]),
+    __metadata("design:paramtypes", [hire_filter_dto_1.HireFilterDto, String, String]),
     __metadata("design:returntype", Promise)
 ], HireController.prototype, "getAll", null);
 __decorate([

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import mongoose, { Model, PipelineStage } from 'mongoose';
 import { Hire, HireDocument } from 'src/apis/hire/hire.schema';
+import { ROLE } from '../../core/constants/enum';
 import { pagination } from '../../utils/utils';
 import { DetailDrawingService } from '../detail-drawing/detail-drawing.service';
 import { UserService } from '../user/user.service';
@@ -19,10 +20,15 @@ export class HireService {
     private readonly detailDrawingService: DetailDrawingService,
   ) {}
 
-  async getAll(filter: HireFilterDto, userId: string) {
+  async getAll(filter: HireFilterDto, userId: string, userRole: ROLE) {
     const { limit, page } = filter;
     const query: PipelineStage[] = [
-      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+      {
+        $match:
+          userRole === ROLE.DESIGNER
+            ? { designerId: new mongoose.Types.ObjectId(userId) }
+            : { userId: new mongoose.Types.ObjectId(userId) },
+      },
       {
         $lookup: {
           from: 'detaildrawings',

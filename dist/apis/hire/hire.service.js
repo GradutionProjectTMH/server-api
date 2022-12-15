@@ -18,6 +18,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_transformer_1 = require("class-transformer");
 const mongoose_2 = require("mongoose");
 const hire_schema_1 = require("./hire.schema");
+const enum_1 = require("../../core/constants/enum");
 const utils_1 = require("../../utils/utils");
 const detail_drawing_service_1 = require("../detail-drawing/detail-drawing.service");
 const user_service_1 = require("../user/user.service");
@@ -28,10 +29,14 @@ let HireService = class HireService {
         this.userService = userService;
         this.detailDrawingService = detailDrawingService;
     }
-    async getAll(filter, userId) {
+    async getAll(filter, userId, userRole) {
         const { limit, page } = filter;
         const query = [
-            { $match: { userId: new mongoose_2.default.Types.ObjectId(userId) } },
+            {
+                $match: userRole === enum_1.ROLE.DESIGNER
+                    ? { designerId: new mongoose_2.default.Types.ObjectId(userId) }
+                    : { userId: new mongoose_2.default.Types.ObjectId(userId) },
+            },
             {
                 $lookup: {
                     from: 'detaildrawings',

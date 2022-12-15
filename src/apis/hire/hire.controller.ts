@@ -11,6 +11,7 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HireService } from 'src/apis/hire/hire.service';
 import { responseError, responseSuccess } from '../../base/base.controller';
+import { ROLE } from '../../core/constants/enum';
 import { Auth } from '../../core/decorators/auth.decorator';
 import { User } from '../../core/decorators/user.decorator';
 import { HireFilterDto } from './dto/hire-filter.dto';
@@ -24,9 +25,13 @@ export class HireController {
   @ApiOperation({ summary: 'Get all hire' })
   @Auth()
   @Get()
-  async getAll(@Query() filter: HireFilterDto, @User('id') userId: string) {
+  async getAll(
+    @Query() filter: HireFilterDto,
+    @User('id') userId: string,
+    @User('role') userRole: ROLE,
+  ) {
     try {
-      const data = await this.hireService.getAll(filter, userId);
+      const data = await this.hireService.getAll(filter, userId, userRole);
       return responseSuccess(data);
     } catch (error) {
       console.log(error);

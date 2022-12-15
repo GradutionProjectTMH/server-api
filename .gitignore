@@ -1,6 +1,7 @@
 # compiled output
 # /public
 # /dist
+/server.zip
 /node_modules
 
 # Logs
