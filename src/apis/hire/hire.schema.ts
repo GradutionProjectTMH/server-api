@@ -3,7 +3,7 @@ import mongoose, { Document, Mixed } from 'mongoose';
 import { DSchema } from '../../core/decorators/schema.decorator';
 import { DetailDrawing } from '../detail-drawing/detail-drawing.schema';
 import { User } from '../user/user.schema';
-import { STATUS_HIRE } from './enum/hire.enum';
+import { STATUS_DRAWING_FLOOR, STATUS_HIRE } from './enum/hire.enum';
 
 @Schema()
 class ItemDesign {
@@ -28,7 +28,7 @@ class ItemFloorDesign {
   @Prop({ type: Array<ItemDesign> })
   designs: ItemDesign[];
 
-  @Prop({ type: Boolean })
+  @Prop({ type: String, enum: STATUS_DRAWING_FLOOR })
   status: boolean;
 }
 
