@@ -3,7 +3,7 @@ import { TransactionDto } from './dto/transaction.dto';
 export declare class TransactionController {
     private readonly transactionService;
     constructor(transactionService: TransactionService);
-    getAll(): Promise<{
+    getAll(userId: string): Promise<{
         success: boolean;
         message: string;
     }>;

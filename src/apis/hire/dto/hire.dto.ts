@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { EnumTransform } from '../../../core/decorators/enum-transform.decorator';
 import { IsObjectId } from '../../../core/validations/is-object-id.validation';
-import { STATUS_HIRE } from '../enum/hire.enum';
+import { STATUS_DRAWING_FLOOR, STATUS_HIRE } from '../enum/hire.enum';
 
 class ItemDesign {
   @ApiProperty()
@@ -51,8 +51,14 @@ class ItemFloorDesign {
 
   @ApiProperty()
   @IsOptional()
-  @IsBoolean()
-  status: boolean;
+  @IsEnum(STATUS_DRAWING_FLOOR)
+  @EnumTransform(STATUS_DRAWING_FLOOR)
+  status: STATUS_DRAWING_FLOOR;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  phaseId: string;
 }
 
 class ItemHouseDesign {
@@ -101,4 +107,13 @@ export class HireDto {
   @IsEnum(STATUS_HIRE)
   @EnumTransform(STATUS_HIRE)
   status: STATUS_HIRE;
+
+  @ApiProperty()
+  @IsOptional()
+  transactions: Record<string, any>[];
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  projectId: string;
 }

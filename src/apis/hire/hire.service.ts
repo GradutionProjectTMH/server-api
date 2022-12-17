@@ -21,13 +21,15 @@ export class HireService {
   ) {}
 
   async getAll(filter: HireFilterDto, userId: string, userRole: ROLE) {
-    const { limit, page } = filter;
+    const { limit, page, typeOrder } = filter;
     const query: PipelineStage[] = [
       {
         $match:
-          userRole === ROLE.DESIGNER
+          typeOrder && typeOrder === 'my-drawing'
+            ? { userId: new mongoose.Types.ObjectId(userId) }
+            : typeOrder && typeOrder === 'my-order'
             ? { designerId: new mongoose.Types.ObjectId(userId) }
-            : { userId: new mongoose.Types.ObjectId(userId) },
+            : {},
       },
       {
         $lookup: {
@@ -54,6 +56,20 @@ export class HireService {
       {
         $unwind: {
           path: '$designer',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: {
+          path: '$user',
           preserveNullAndEmptyArrays: true,
         },
       },

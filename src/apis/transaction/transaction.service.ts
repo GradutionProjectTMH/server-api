@@ -16,8 +16,8 @@ export class TransactionService {
     private readonly transactionModel: Model<TransactionDocument>,
   ) {}
 
-  async getAll() {
-    return await this.transactionModel.find();
+  async getAll(userId: string) {
+    return await this.transactionModel.find({ userId });
   }
 
   async getById(id: string, userId: string) {
@@ -30,6 +30,9 @@ export class TransactionService {
 
   async create(data: TransactionDto, userId: string) {
     const transactionInstance = plainToInstance(Transaction, data);
+
+    transactionInstance.userId = userId;
+
     const transaction = new this.transactionModel(transactionInstance);
     return transaction.save();
   }

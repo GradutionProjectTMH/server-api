@@ -69,6 +69,9 @@ export class User extends BaseSchema {
 
   @Prop({ type: Profile })
   profile: Profile;
+
+  @Prop({ type: String })
+  wallet: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

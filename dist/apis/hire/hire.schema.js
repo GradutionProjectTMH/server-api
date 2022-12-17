@@ -48,9 +48,13 @@ __decorate([
     __metadata("design:type", Array)
 ], ItemFloorDesign.prototype, "designs", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Boolean }),
+    (0, mongoose_1.Prop)({ type: String, enum: hire_enum_1.STATUS_DRAWING_FLOOR }),
     __metadata("design:type", Boolean)
 ], ItemFloorDesign.prototype, "status", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], ItemFloorDesign.prototype, "phaseId", void 0);
 ItemFloorDesign = __decorate([
     (0, mongoose_1.Schema)()
 ], ItemFloorDesign);
@@ -105,6 +109,14 @@ __decorate([
     (0, mongoose_1.Prop)({ type: String, enum: hire_enum_1.STATUS_HIRE, required: true }),
     __metadata("design:type", String)
 ], Hire.prototype, "status", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Object }),
+    __metadata("design:type", Array)
+], Hire.prototype, "transactions", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], Hire.prototype, "projectId", void 0);
 Hire = __decorate([
     (0, schema_decorator_1.DSchema)()
 ], Hire);

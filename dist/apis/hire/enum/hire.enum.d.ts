@@ -1,6 +1,13 @@
 export declare enum STATUS_HIRE {
     PENDING = "pending",
-    ACCEPT = "accept",
-    CANCELED = "canceled",
-    COMPLETE = "complete"
+    RUNNING = "running",
+    FINISH = "finish"
+}
+export declare enum STATUS_DRAWING_FLOOR {
+    PENDING = "pending",
+    STARTED = "started",
+    RUNNING = "running",
+    SUBLIMED = "submitted",
+    FINISHED = "finished",
+    CANCELED = "canceled"
 }

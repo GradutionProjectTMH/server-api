@@ -51,6 +51,7 @@ export declare class User extends BaseSchema {
     status: USER_STATUS;
     address: Address;
     profile: Profile;
+    wallet: string;
 }
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, any>, {}, {}, {}, {}, "type", User>;
 export {};

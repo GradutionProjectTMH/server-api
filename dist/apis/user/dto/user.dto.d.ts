@@ -18,5 +18,6 @@ export declare class UserDto {
     status: USER_STATUS;
     address: AddressDto;
     profile: ProfileDto;
+    wallet: string;
 }
 export {};

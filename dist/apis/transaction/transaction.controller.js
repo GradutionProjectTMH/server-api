@@ -24,9 +24,9 @@ let TransactionController = class TransactionController {
     constructor(transactionService) {
         this.transactionService = transactionService;
     }
-    async getAll() {
+    async getAll(userId) {
         try {
-            const data = await this.transactionService.getAll();
+            const data = await this.transactionService.getAll(userId);
             return (0, base_controller_1.responseSuccess)(data);
         }
         catch (error) {
@@ -79,8 +79,9 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Get all transaction' }),
     (0, auth_decorator_1.Auth)(),
     (0, common_1.Get)(),
+    __param(0, (0, user_decorator_1.User)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "getAll", null);
 __decorate([

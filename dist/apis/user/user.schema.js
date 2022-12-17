@@ -101,6 +101,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Profile }),
     __metadata("design:type", Profile)
 ], User.prototype, "profile", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], User.prototype, "wallet", void 0);
 User = __decorate([
     (0, schema_decorator_1.DSchema)()
 ], User);

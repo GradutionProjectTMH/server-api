@@ -22,9 +22,9 @@ export class TransactionController {
   @ApiOperation({ summary: 'Get all transaction' })
   @Auth()
   @Get()
-  async getAll() {
+  async getAll(@User('id') userId: string) {
     try {
-      const data = await this.transactionService.getAll();
+      const data = await this.transactionService.getAll(userId);
       return responseSuccess(data);
     } catch (error) {
       console.log(error.message);

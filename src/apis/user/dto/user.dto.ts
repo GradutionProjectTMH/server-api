@@ -76,4 +76,9 @@ export class UserDto {
   @Type(() => ProfileDto)
   @IsOptional()
   profile: ProfileDto;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  wallet: string;
 }

@@ -61,9 +61,16 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsBoolean)(),
-    __metadata("design:type", Boolean)
+    (0, class_validator_1.IsEnum)(hire_enum_1.STATUS_DRAWING_FLOOR),
+    (0, enum_transform_decorator_1.EnumTransform)(hire_enum_1.STATUS_DRAWING_FLOOR),
+    __metadata("design:type", String)
 ], ItemFloorDesign.prototype, "status", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], ItemFloorDesign.prototype, "phaseId", void 0);
 class ItemHouseDesign {
 }
 __decorate([
@@ -120,5 +127,16 @@ __decorate([
     (0, enum_transform_decorator_1.EnumTransform)(hire_enum_1.STATUS_HIRE),
     __metadata("design:type", String)
 ], HireDto.prototype, "status", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Array)
+], HireDto.prototype, "transactions", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], HireDto.prototype, "projectId", void 0);
 exports.HireDto = HireDto;
 //# sourceMappingURL=hire.dto.js.map

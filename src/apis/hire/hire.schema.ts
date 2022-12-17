@@ -30,6 +30,9 @@ class ItemFloorDesign {
 
   @Prop({ type: String, enum: STATUS_DRAWING_FLOOR })
   status: boolean;
+
+  @Prop({ type: String })
+  phaseId: string;
 }
 
 @Schema()
@@ -74,6 +77,12 @@ export class Hire {
 
   @Prop({ type: String, enum: STATUS_HIRE, required: true })
   status: STATUS_HIRE;
+
+  @Prop({ type: Object })
+  transactions: Mixed[];
+
+  @Prop({ type: String })
+  projectId: string;
 }
 
 export const HireSchema = SchemaFactory.createForClass(Hire);

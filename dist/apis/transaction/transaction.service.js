@@ -23,8 +23,8 @@ let TransactionService = class TransactionService {
     constructor(transactionModel) {
         this.transactionModel = transactionModel;
     }
-    async getAll() {
-        return await this.transactionModel.find();
+    async getAll(userId) {
+        return await this.transactionModel.find({ userId });
     }
     async getById(id, userId) {
         const transaction = await this.transactionModel.findById(id).lean();
@@ -35,6 +35,7 @@ let TransactionService = class TransactionService {
     }
     async create(data, userId) {
         const transactionInstance = (0, class_transformer_1.plainToInstance)(transaction_schema_1.Transaction, data);
+        transactionInstance.userId = userId;
         const transaction = new this.transactionModel(transactionInstance);
         return transaction.save();
     }

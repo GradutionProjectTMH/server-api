@@ -1,4 +1,4 @@
-import { STATUS_HIRE } from '../enum/hire.enum';
+import { STATUS_DRAWING_FLOOR, STATUS_HIRE } from '../enum/hire.enum';
 declare class ItemDesign {
     image: string;
     coHomeUrl: string;
@@ -8,7 +8,8 @@ declare class ItemDesign {
 declare class ItemFloorDesign {
     floor: number;
     designs: ItemDesign[];
-    status: boolean;
+    status: STATUS_DRAWING_FLOOR;
+    phaseId: string;
 }
 declare class ItemHouseDesign {
     designs: ItemDesign[];
@@ -21,5 +22,7 @@ export declare class HireDto {
     floorDesigns: ItemFloorDesign[];
     houseDesigns: ItemHouseDesign[];
     status: STATUS_HIRE;
+    transactions: Record<string, any>[];
+    projectId: string;
 }
 export {};

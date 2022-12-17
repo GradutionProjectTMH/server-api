@@ -10,6 +10,7 @@ declare class ItemFloorDesign {
     floor: number;
     designs: ItemDesign[];
     status: boolean;
+    phaseId: string;
 }
 declare class ItemHouseDesign {
     designs: ItemDesign[];
@@ -23,6 +24,8 @@ export declare class Hire {
     floorDesigns: ItemFloorDesign[];
     houseDesigns: ItemHouseDesign[];
     status: STATUS_HIRE;
+    transactions: Mixed[];
+    projectId: string;
 }
 export declare const HireSchema: mongoose.Schema<Hire, mongoose.Model<Hire, any, any, any, any>, {}, {}, {}, {}, "type", Hire>;
 export {};

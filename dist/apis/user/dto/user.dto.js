@@ -101,5 +101,11 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", ProfileDto)
 ], UserDto.prototype, "profile", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UserDto.prototype, "wallet", void 0);
 exports.UserDto = UserDto;
 //# sourceMappingURL=user.dto.js.map

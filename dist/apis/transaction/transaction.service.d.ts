@@ -28,7 +28,7 @@ import { TransactionDto } from './dto/transaction.dto';
 export declare class TransactionService {
     private readonly transactionModel;
     constructor(transactionModel: Model<TransactionDocument>);
-    getAll(): Promise<(Transaction & import("mongoose").Document<any, any, any> & {
+    getAll(userId: string): Promise<(Transaction & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
     getById(id: string, userId: string): Promise<import("mongoose").LeanDocument<Transaction & import("mongoose").Document<any, any, any> & {
