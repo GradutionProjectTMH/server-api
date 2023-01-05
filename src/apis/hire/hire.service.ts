@@ -97,6 +97,28 @@ export class HireService {
   }
 
   async create(data: HireDto, userId: string) {
+    const oldOrder = await this.hireModel
+      .findOne({
+        userId,
+        designerId: data.designerId,
+      })
+      .lean();
+
+    if (oldOrder) {
+      await this.hireModel.deleteOne({ _id: oldOrder._id });
+    }
+
+    const selfBuild = await this.hireModel
+      .findOne({
+        userId,
+        designerId: userId,
+      })
+      .lean();
+
+    if (selfBuild) {
+      await this.hireModel.deleteOne({ _id: selfBuild._id });
+    }
+
     const hireInstance = plainToInstance(Hire, data);
 
     hireInstance.status = STATUS_HIRE.PENDING;

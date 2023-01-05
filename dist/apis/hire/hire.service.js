@@ -97,6 +97,24 @@ let HireService = class HireService {
         return hire;
     }
     async create(data, userId) {
+        const oldOrder = await this.hireModel
+            .findOne({
+            userId,
+            designerId: data.designerId,
+        })
+            .lean();
+        if (oldOrder) {
+            await this.hireModel.deleteOne({ _id: oldOrder._id });
+        }
+        const selfBuild = await this.hireModel
+            .findOne({
+            userId,
+            designerId: userId,
+        })
+            .lean();
+        if (selfBuild) {
+            await this.hireModel.deleteOne({ _id: selfBuild._id });
+        }
         const hireInstance = (0, class_transformer_1.plainToInstance)(hire_schema_1.Hire, data);
         hireInstance.status = hire_enum_1.STATUS_HIRE.PENDING;
         await this.userService.getById(hireInstance.designerId);
