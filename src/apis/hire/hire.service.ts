@@ -101,6 +101,7 @@ export class HireService {
       .findOne({
         userId,
         designerId: data.designerId,
+        detailDrawingId: data.detailDrawingId,
       })
       .lean();
 
@@ -112,6 +113,7 @@ export class HireService {
       .findOne({
         userId,
         designerId: userId,
+        detailDrawingId: data.detailDrawingId,
       })
       .lean();
 
