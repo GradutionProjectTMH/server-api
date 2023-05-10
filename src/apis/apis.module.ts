@@ -17,6 +17,9 @@ import { HireModule } from 'src/apis/hire/hire.module';
 import { TransactionModule } from 'src/apis/transaction/transaction.module';
 import { CoinModule } from 'src/apis/coin/coin.module';
 import { EnvironmentModule } from 'src/apis/environment/environment.module';
+import { ChatGptModule } from 'src/apis/chat-gpt/chat-gpt.module';
+import { GainttModule } from 'src/apis/gaintt/gaintt.module';
+import { TextToImageModule } from 'src/apis/text-to-image/text-to-image.module';
 @Module({
   imports: [
     AuthModule,
@@ -31,6 +34,9 @@ import { EnvironmentModule } from 'src/apis/environment/environment.module';
     TransactionModule,
     CoinModule,
     EnvironmentModule,
+    ChatGptModule,
+    GainttModule,
+    TextToImageModule,
   ],
   controllers: [],
   providers: [],
