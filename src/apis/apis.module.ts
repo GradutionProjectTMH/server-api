@@ -18,7 +18,7 @@ import { TransactionModule } from 'src/apis/transaction/transaction.module';
 import { CoinModule } from 'src/apis/coin/coin.module';
 import { EnvironmentModule } from 'src/apis/environment/environment.module';
 import { ChatGptModule } from 'src/apis/chat-gpt/chat-gpt.module';
-import { GainttModule } from 'src/apis/gaintt/gaintt.module';
+import { ganttModule } from 'src/apis/gantt/gantt.module';
 import { TextToImageModule } from 'src/apis/text-to-image/text-to-image.module';
 @Module({
   imports: [
@@ -35,7 +35,7 @@ import { TextToImageModule } from 'src/apis/text-to-image/text-to-image.module';
     CoinModule,
     EnvironmentModule,
     ChatGptModule,
-    GainttModule,
+    ganttModule,
     TextToImageModule,
   ],
   controllers: [],

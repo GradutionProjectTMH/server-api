@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateGainttDto {
+export class CreateganttDto {
   @ApiProperty({ type: Number, example: 15 })
   @IsNumber()
   @IsNotEmpty()
@@ -10,7 +10,7 @@ export class CreateGainttDto {
   @ApiProperty({ type: Number, example: 7 })
   @IsNotEmpty()
   @IsNumber()
-  with: number;
+  width: number;
 
   @ApiProperty({ type: Number, example: 3 })
   @IsNotEmpty()

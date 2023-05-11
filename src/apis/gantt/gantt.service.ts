@@ -1,25 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGainttDto } from './dto/create-gaintt.dto';
-import { UpdateGainttDto } from './dto/update-gaintt.dto';
+import { CreateganttDto } from './dto/create-gantt.dto';
+import { UpdateganttDto } from './dto/update-gantt.dto';
 import { isJSON } from 'class-validator';
 import { ChatGptService } from 'src/apis/chat-gpt/chat-gpt.service';
 
 @Injectable()
-export class GainttService {
+export class ganttService {
   constructor(private readonly chatGptService: ChatGptService) {}
 
-  async gaintt(createGainttDto: CreateGainttDto) {
+  async gantt(createganttDto: CreateganttDto) {
     const {
       length,
       height,
+      width,
       floor,
       location,
       laborCost,
       estimate,
       laborAmount,
-    } = createGainttDto;
+    } = createganttDto;
 
-    const message = `Tôi muốn xây 1 căn nhà với chiều dài ${length}m, chiều rộng là ${createGainttDto.with}m, chiều cao cho mỗi tầng là ${height}m, nhà gồm ${floor} tầng, địa điểm xây dựng tại ${location}, giá nhân công để trả cho một người là ${laborCost} VND trong một ngày, thời gian xây dựng toàn bộ công trình là ${estimate} ngày, tổng số lượng công nhân là ${laborAmount} người. Một công trình xây dựng cơ bản sẽ có các phần công việc là phần thiết kế, phần móng, phần thô, phần vật tư hoàn thiện. Với chi phí xây dựng từng phần như sau:
+    const message = `Tôi muốn xây 1 căn nhà với chiều dài ${length}m, chiều rộng là ${width}m, chiều cao cho mỗi tầng là ${height}m, nhà gồm ${floor} tầng, địa điểm xây dựng tại ${location}, giá nhân công để trả cho một người là ${laborCost} VND trong một ngày, thời gian xây dựng toàn bộ công trình là ${estimate} ngày, tổng số lượng công nhân là ${laborAmount} người. Một công trình xây dựng cơ bản sẽ có các phần công việc là phần thiết kế, phần móng, phần thô, phần vật tư hoàn thiện. Với chi phí xây dựng từng phần như sau:
     + Phần thiết kế chiếm 0,34% tổng chi phí.
     + Phần móng chiếm 4,8%  tổng chi phí.
     + Phần thô chiếm 59%  tổng chi phí.
