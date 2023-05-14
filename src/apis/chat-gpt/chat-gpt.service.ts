@@ -15,12 +15,16 @@ export class ChatGptService {
   }
 
   async chat(createChatGptDto: CreateChatGptDto) {
-    const response = await this.openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      messages: createChatGptDto.messages,
-      max_tokens: 500,
-    });
+    try {
+      const response = await this.openai.createChatCompletion({
+        model: 'gpt-3.5-turbo',
+        messages: createChatGptDto.messages,
+        max_tokens: 500,
+      });
 
-    return response.data.choices[0];
+      return response.data.choices[0];
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
