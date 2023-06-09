@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateTextToImageDto {
   @ApiProperty({
@@ -18,6 +18,16 @@ export class CreateTextToImageDto {
   })
   @IsString()
   negativePrompt: string;
+
+  @ApiProperty({ type: String, example: '1000' })
+  @IsString()
+  @IsOptional()
+  width: string;
+
+  @ApiProperty({ type: String, example: '1000' })
+  @IsString()
+  @IsOptional()
+  height: string;
 
   @ApiProperty({
     type: Number,
