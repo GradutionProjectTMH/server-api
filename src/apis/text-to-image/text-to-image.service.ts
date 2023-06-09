@@ -10,7 +10,6 @@ export class TextToImageService {
     if (!createTextToImageDto.prompt) {
       throw new Error('Prompt is required');
     }
-    console.log();
 
     const URL = 'https://stablediffusionapi.com/api/v3/text2img';
     const response = await this.httpService.axiosRef.post(
